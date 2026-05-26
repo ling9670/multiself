@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#13100D">
+  <meta property="og:title" content="Evelyn × System">
+  <meta property="og:description" content="13 nodes. 5 clusters. 1 person.">
+  <title>Evelyn × System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #13100D;
+      --bg2:      #1A1612;
+      --bg3:      #252019;
+      --accent:   #D4956A;
+      --sand:     #C8B89A;
+      --text:     #E8E0D4;
+      --text-mid: #9A8E82;
+      --text-dim: #5C5248;
+      --radius:   12px;
+      --nav-h:    64px;
+      --ease:     cubic-bezier(0.4, 0, 0.2, 1);
+      --cannabis: #7A9E6A;
+      --body-c:   #D4956A;
+      --service:  #E07A7A;
+      --hands:    #C8A0D4;
+      --platform: #7A9E9F;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overscroll-behavior: none;
+    }
+
+    #app {
+      display: flex;
+      flex-direction: column;
+      height: 100dvh;
+      overflow: hidden;
+    }
+
+    /* ─── PANELS ─── */
+    .panel {
+      display: none;
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 16px);
+      -webkit-overflow-scrolling: touch;
+    }
+    .panel.active { display: block; }
+    #roles-panel.active { display: flex; flex-direction: column; overflow: hidden; }
+
+    /* ─── BOTTOM NAV ─── */
+    .bnav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px));
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      background: rgba(26,22,18,0.97);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(200,184,154,0.08);
+      display: flex;
+      align-items: stretch;
+      z-index: 100;
+    }
+
+    .bnav-tab {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      transition: opacity 0.15s;
+      padding: 8px 0;
+    }
+    .bnav-tab:active { opacity: 0.65; }
+
+    .bnav-icon {
+      font-size: 18px;
+      line-height: 1;
+      color: var(--text-dim);
+      transition: color 0.2s, transform 0.2s var(--ease);
+    }
+    .bnav-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 7.5px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      transition: color 0.2s;
+    }
+    .bnav-tab.active .bnav-icon  { color: var(--accent); transform: translateY(-2px); }
+    .bnav-tab.active .bnav-label { color: var(--accent); }
+
+    /* ═══════════════════════════════════════
+       MAP TAB
+    ═══════════════════════════════════════ */
+    #map-panel { background: var(--bg); }
+
+    .map-header {
+      padding: 24px 20px 4px;
+      text-align: center;
+    }
+    .map-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 300;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .map-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 8.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .map-svg-wrap {
+      max-width: 380px;
+      margin: 0 auto;
+      padding: 8px 16px;
+    }
+    .map-svg-wrap svg { width: 100%; height: auto; }
+
+    .map-cluster-info {
+      margin: 0 16px 8px;
+      border-radius: var(--radius);
+      background: var(--bg2);
+      border: 1px solid rgba(200,184,154,0.1);
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.35s var(--ease), opacity 0.3s;
+      opacity: 0;
+    }
+    .map-cluster-info.show { max-height: 200px; opacity: 1; }
+
+    .mci-inner { padding: 14px 16px; }
+    .mci-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .mci-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .mci-chip {
+      padding: 6px 13px;
+      border-radius: 100px;
+      font-family: 'Space Mono', monospace;
+      font-size: 8.5px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      color: var(--bg);
+      transition: opacity 0.15s;
+    }
+    .mci-chip:active { opacity: 0.75; }
+
+    .map-legend {
+      padding: 0 20px 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      justify-content: center;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .legend-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+    /* ═══════════════════════════════════════
+       NODES TAB
+    ═══════════════════════════════════════ */
+    #nodes-panel { padding: 24px 0 0; }
+
+    .nodes-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 300;
+      padding: 0 20px 18px;
+      border-bottom: 1px solid rgba(200,184,154,0.07);
+    }
+
+    .cluster-section {
+      border-bottom: 1px solid rgba(200,184,154,0.07);
+    }
+    .cluster-header {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 15px 20px;
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.15s;
+    }
+    .cluster-header:active { background: var(--bg2); }
+
+    .cluster-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .cluster-name {
+      font-family: 'Space Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      flex: 1;
+    }
+    .cluster-meta {
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      color: var(--text-dim);
+      margin-right: 8px;
+    }
+    .cluster-chevron {
+      font-size: 14px;
+      color: var(--text-dim);
+      transition: transform 0.25s var(--ease);
+    }
+    .cluster-section.open .cluster-chevron { transform: rotate(90deg); }
+
+    .cluster-nodes-list { display: none; }
+    .cluster-section.open .cluster-nodes-list { display: block; }
+
+    .node-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 20px 14px 36px;
+      border-top: 1px solid rgba(200,184,154,0.05);
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.15s;
+    }
+    .node-card:active { background: var(--bg2); }
+
+    .nc-left { flex: 1; min-width: 0; }
+    .nc-id {
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      margin-bottom: 3px;
+    }
+    .nc-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 19px;
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 1px;
+    }
+    .nc-zh {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      font-style: italic;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .nc-tagline {
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: var(--text-mid);
+    }
+    .nc-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .nc-priority { font-size: 16px; }
+    .nc-arrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    /* ═══════════════════════════════════════
+       NODE DETAIL OVERLAY
+    ═══════════════════════════════════════ */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      z-index: 200;
+      display: none;
+      align-items: flex-end;
+      backdrop-filter: blur(4px);
+    }
+    .overlay.show { display: flex; }
+
+    .sheet {
+      background: var(--bg);
+      border-radius: 20px 20px 0 0;
+      width: 100%;
+      max-height: 88dvh;
+      max-height: 88vh;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+    }
+    .sheet-drag {
+      width: 36px; height: 4px;
+      background: var(--text-dim);
+      border-radius: 2px;
+      margin: 12px auto 18px;
+    }
+    .sheet-hd {
+      padding: 0 22px 18px;
+      border-bottom: 1px solid rgba(200,184,154,0.08);
+    }
+    .sheet-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 8.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .sheet-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30px;
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .sheet-zh {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      font-style: italic;
+      color: var(--accent);
+    }
+    .sheet-bd { padding: 20px 22px 0; }
+
+    .srow {
+      margin-bottom: 20px;
+    }
+    .srow-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 7.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .srow-text {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--text-mid);
+    }
+
+    .mvp-box {
+      background: var(--bg2);
+      border: 1px solid rgba(212,149,106,0.18);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .mvp-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 7px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .mvp-text {
+      font-size: 13.5px;
+      line-height: 1.65;
+      color: var(--text);
+    }
+
+    .sheet-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+    }
+    .s-btn {
+      flex: 1;
+      padding: 13px;
+      border-radius: 100px;
+      border: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      transition: opacity 0.15s;
+      text-align: center;
+    }
+    .s-btn:active { opacity: 0.75; }
+    .s-btn-primary { background: var(--accent); color: var(--bg); }
+    .s-btn-secondary {
+      background: var(--bg3);
+      color: var(--text-mid);
+      border: 1px solid rgba(200,184,154,0.12);
+    }
+    .s-btn-secondary.launched {
+      background: rgba(122,158,106,0.18);
+      border-color: #7A9E6A;
+      color: #7A9E6A;
+    }
+
+    /* ═══════════════════════════════════════
+       PROGRESS TAB
+    ═══════════════════════════════════════ */
+    #progress-panel { padding: 24px 16px 0; }
+
+    .prog-top {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .prog-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 8.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+    }
+    .ring-wrap {
+      position: relative;
+      width: 130px;
+      height: 130px;
+      margin: 0 auto 14px;
+    }
+    .ring-wrap svg { transform: rotate(-90deg); }
+    .ring-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .ring-n {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 38px;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--text);
+    }
+    .ring-of {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+    }
+    .prog-tagline {
+      font-size: 13px;
+      color: var(--text-dim);
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.06em;
+    }
+
+    .pc-section {
+      background: var(--bg2);
+      border-radius: var(--radius);
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .pc-hd {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 16px 8px;
+    }
+    .pc-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .pc-name {
+      font-family: 'Space Mono', monospace;
+      font-size: 8.5px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      flex: 1;
+    }
+    .pc-ratio {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      color: var(--text-dim);
+    }
+    .pc-bar-track {
+      height: 2px;
+      background: rgba(200,184,154,0.07);
+      margin: 0 16px 10px;
+      border-radius: 1px;
+      overflow: hidden;
+    }
+    .pc-bar-fill {
+      height: 100%;
+      border-radius: 1px;
+      transition: width 0.6s var(--ease);
+    }
+    .pc-items {
+      padding: 2px 16px 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .pci {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 100px;
+      background: var(--bg3);
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.2s;
+    }
+    .pci.done { background: rgba(122,158,106,0.14); }
+    .pci-cb {
+      width: 13px; height: 13px;
+      border-radius: 50%;
+      border: 1.5px solid var(--text-dim);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .pci.done .pci-cb { background: #7A9E6A; border-color: #7A9E6A; }
+    .pci-cb-inner {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--bg); display: none;
+    }
+    .pci.done .pci-cb-inner { display: block; }
+    .pci-lbl {
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+    }
+    .pci.done .pci-lbl { color: #7A9E6A; }
+
+    /* ═══════════════════════════════════════
+       ROLES TAB
+    ═══════════════════════════════════════ */
+    .roles-picker {
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      border-bottom: 1px solid rgba(200,184,154,0.08);
+      padding: 10px 0;
+      z-index: 10;
+      overflow-x: auto;
+      white-space: nowrap;
+      scrollbar-width: none;
+    }
+    .roles-picker::-webkit-scrollbar { display: none; }
+    .rp-inner {
+      display: inline-flex;
+      gap: 6px;
+      padding: 0 16px;
+    }
+    .rp-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 12px;
+      border-radius: 100px;
+      border: 1px solid rgba(200,184,154,0.1);
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      color: var(--text-dim);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .rp-pill-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .rp-pill.active {
+      background: var(--bg2);
+      border-color: rgba(212,149,106,0.28);
+      color: var(--text);
+    }
+
+    .roles-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 20px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .r-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 8.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .r-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 34px;
+      font-weight: 300;
+      line-height: 1.05;
+      margin-bottom: 6px;
+    }
+    .r-zh {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 19px;
+      font-style: italic;
+      color: var(--accent);
+      margin-bottom: 26px;
+    }
+
+    .rs {
+      margin-bottom: 26px;
+    }
+    .rs-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(212,149,106,0.13);
+      margin-bottom: 14px;
+    }
+    .rs-body {
+      font-size: 15px;
+      line-height: 1.82;
+      color: var(--text-mid);
+    }
+    .rs-body p { margin-bottom: 12px; }
+    .rs-body p:last-child { margin-bottom: 0; }
+    .rs-body strong { color: var(--text); font-weight: 500; }
+    .rs-body em { color: var(--accent); font-style: normal; }
+
+    .rs-quote {
+      border-left: 2px solid;
+      padding-left: 14px;
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--text-mid);
+    }
+
+    .path-box {
+      background: var(--bg2);
+      border-radius: 10px;
+      padding: 16px;
+      font-size: 14px;
+      line-height: 1.82;
+      color: var(--text-mid);
+    }
+    .path-arrow { font-family: 'Space Mono', monospace; font-size: 11px; }
+
+    .r-mono-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      color: var(--text-dim);
+    }
+
+    /* ═══════════════════════════════════════
+       ABOUT TAB
+    ═══════════════════════════════════════ */
+    #about-panel { padding: 24px 20px 0; }
+
+    .about-hero { margin-bottom: 32px; }
+    .about-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 8.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .about-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 38px;
+      font-weight: 300;
+      line-height: 1.05;
+      margin-bottom: 14px;
+    }
+    .about-title em { font-style: italic; color: var(--accent); }
+    .about-sub {
+      font-size: 15px;
+      line-height: 1.78;
+      color: var(--text-mid);
+    }
+
+    .about-sec { margin-bottom: 32px; }
+    .about-sec-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 8.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 14px;
+    }
+
+    .persona-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .persona-card {
+      background: var(--bg2);
+      border-radius: var(--radius);
+      padding: 15px 13px;
+    }
+    .p-icon { font-size: 18px; margin-bottom: 7px; }
+    .p-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+    .p-desc {
+      font-size: 11px;
+      line-height: 1.6;
+      color: var(--text-mid);
+    }
+
+    .priority-list { display: flex; flex-direction: column; gap: 8px; }
+    .pri-item {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 13px 15px;
+      background: var(--bg2);
+      border-radius: var(--radius);
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.15s;
+    }
+    .pri-item:active { background: var(--bg3); }
+    .pri-emoji { font-size: 17px; flex-shrink: 0; }
+    .pri-body { flex: 1; min-width: 0; }
+    .pri-name { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 400; }
+    .pri-detail {
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.04em;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+    .pri-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      color: var(--text-dim);
+    }
+
+    .core-box {
+      background: var(--bg2);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .core-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 23px;
+      font-weight: 300;
+      line-height: 1.45;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .core-body {
+      font-size: 14px;
+      line-height: 1.78;
+      color: var(--text-mid);
+    }
+
+    /* ═══════════════════════════════════════
+       DESKTOP BREAKPOINT
+    ═══════════════════════════════════════ */
+    @media (min-width: 820px) {
+      #app {
+        flex-direction: row;
+        height: 100vh;
+        overflow: hidden;
+      }
+      .panel {
+        padding-bottom: 32px;
+      }
+      #roles-panel.active { overflow: hidden; }
+      .bnav {
+        position: relative;
+        width: 76px;
+        height: 100vh;
+        flex-direction: column;
+        border-top: none;
+        border-right: 1px solid rgba(200,184,154,0.08);
+        order: -1;
+        padding-bottom: 0;
+      }
+      .bnav-label { font-size: 6.5px; }
+      .bnav-icon { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ═══ MAP PANEL ═══ -->
+  <div class="panel active" id="map-panel">
+    <div class="map-header">
+      <div class="map-title">Evelyn × System</div>
+      <div class="map-sub">13 nodes · 5 clusters · 1 person</div>
+    </div>
+
+    <div class="map-svg-wrap">
+      <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" id="mapSvg">
+        <defs>
+          <radialGradient id="cg" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#D4956A" stop-opacity="0.12"/>
+            <stop offset="100%" stop-color="#D4956A" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <circle cx="160" cy="160" r="130" fill="url(#cg)"/>
+        <g id="mapLines"></g>
+        <g id="mapClusters"></g>
+        <!-- Center node -->
+        <circle cx="160" cy="160" r="28" fill="#1A1612" stroke="rgba(212,149,106,0.35)" stroke-width="1.5"/>
+        <text x="160" y="155" text-anchor="middle"
+          font-family="Cormorant Garamond, serif" font-size="22" fill="#D4956A" font-weight="300">E</text>
+        <text x="160" y="173" text-anchor="middle"
+          font-family="Space Mono, monospace" font-size="6" letter-spacing="4" fill="#5C5248">EVE</text>
+      </svg>
+    </div>
+
+    <div class="map-cluster-info" id="mapInfo">
+      <div class="mci-inner">
+        <div class="mci-label" id="mciLabel"></div>
+        <div class="mci-chips" id="mciChips"></div>
+      </div>
+    </div>
+
+    <div class="map-legend" id="mapLegend"></div>
+  </div>
+
+  <!-- ═══ NODES PANEL ═══ -->
+  <div class="panel" id="nodes-panel">
+    <div class="nodes-heading">All Nodes</div>
+    <div id="clusterList"></div>
+  </div>
+
+  <!-- ═══ PROGRESS PANEL ═══ -->
+  <div class="panel" id="progress-panel">
+    <div class="prog-top">
+      <div class="prog-eyebrow">Launch Progress</div>
+      <div class="ring-wrap">
+        <svg width="130" height="130" viewBox="0 0 130 130">
+          <circle cx="65" cy="65" r="54" fill="none"
+            stroke="rgba(200,184,154,0.07)" stroke-width="9"/>
+          <circle id="ringFill" cx="65" cy="65" r="54" fill="none"
+            stroke="#D4956A" stroke-width="9"
+            stroke-dasharray="339.29" stroke-dashoffset="339.29"
+            stroke-linecap="round"/>
+        </svg>
+        <div class="ring-label">
+          <div class="ring-n" id="ringN">0</div>
+          <div class="ring-of" id="ringOf">/ 13</div>
+        </div>
+      </div>
+      <div class="prog-tagline" id="progTagline">tap any node to toggle</div>
+    </div>
+    <div id="progClusters"></div>
+  </div>
+
+  <!-- ═══ ROLES PANEL ═══ -->
+  <div class="panel" id="roles-panel">
+    <div class="roles-picker">
+      <div class="rp-inner" id="rpInner"></div>
+    </div>
+    <div class="roles-body" id="rolesBody"></div>
+  </div>
+
+  <!-- ═══ ABOUT PANEL ═══ -->
+  <div class="panel" id="about-panel">
+    <div class="about-hero">
+      <div class="about-eyebrow">Evelyn × multiself</div>
+      <div class="about-title">Same you.<br><em>Every version.</em></div>
+      <div class="about-sub">
+        13 nodes. 5 clusters. One system built around one person's multiple identities.
+        She IS the best demo of the platform she built.
+      </div>
+    </div>
+
+    <div class="about-sec">
+      <div class="about-sec-label">4 Operating Personas — choose one mode per week</div>
+      <div class="persona-grid">
+        <div class="persona-card">
+          <div class="p-icon">✦</div>
+          <div class="p-name">The Maker</div>
+          <div class="p-desc">N04 · N05 · N06 · N07 · N09<br>Video, process, IG story.<br>No words required.</div>
+        </div>
+        <div class="persona-card">
+          <div class="p-icon">◎</div>
+          <div class="p-name">Body Witness</div>
+          <div class="p-desc">N01 · N02 · N03 · N10 · N09<br>Articles, 小紅書,<br>affiliate content.</div>
+        </div>
+        <div class="persona-card">
+          <div class="p-icon">⊙</div>
+          <div class="p-name">Service Provider</div>
+          <div class="p-desc">N07 · N08 · N09<br>Booking, reels,<br>client reactions.</div>
+        </div>
+        <div class="persona-card">
+          <div class="p-icon">⊞</div>
+          <div class="p-name">The Builder</div>
+          <div class="p-desc">N13 · N11 · N12<br>Pages, docs,<br>architecture.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-sec">
+      <div class="about-sec-label">Priority Order — fastest to slowest revenue</div>
+      <div class="priority-list" id="priList"></div>
+    </div>
+
+    <div class="about-sec">
+      <div class="about-sec-label">Anti-Paralysis Rules</div>
+      <div class="core-box">
+        <div class="core-headline">Minimum viable version of each node must be defined before starting.</div>
+        <div class="core-body">
+          "Not ready yet" is a feeling, not a fact.<br><br>
+          Publish first. Perfect later.<br><br>
+          N08 minimum = Calendly link + 1-sentence IG bio.<br>
+          N07 minimum = 3 videos + DM.<br><br>
+          Resume is out in this generation.<br>
+          <em style="color: var(--accent);">See a person in whole.</em>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ BOTTOM NAV ═══ -->
+  <nav class="bnav" id="bnav">
+    <div class="bnav-tab active" data-tab="map">
+      <div class="bnav-icon">⊛</div>
+      <div class="bnav-label">Map</div>
+    </div>
+    <div class="bnav-tab" data-tab="nodes">
+      <div class="bnav-icon">⊞</div>
+      <div class="bnav-label">Nodes</div>
+    </div>
+    <div class="bnav-tab" data-tab="progress">
+      <div class="bnav-icon">◎</div>
+      <div class="bnav-label">Progress</div>
+    </div>
+    <div class="bnav-tab" data-tab="roles">
+      <div class="bnav-icon">≡</div>
+      <div class="bnav-label">Roles</div>
+    </div>
+    <div class="bnav-tab" data-tab="about">
+      <div class="bnav-icon">∿</div>
+      <div class="bnav-label">About</div>
+    </div>
+  </nav>
+
+</div><!-- /#app -->
+
+<!-- ═══ NODE DETAIL OVERLAY ═══ -->
+<div class="overlay" id="overlay">
+  <div class="sheet" id="sheet">
+    <div class="sheet-drag"></div>
+    <div class="sheet-hd">
+      <div class="sheet-eyebrow" id="sEyebrow"></div>
+      <div class="sheet-name" id="sName"></div>
+      <div class="sheet-zh" id="sZh"></div>
+    </div>
+    <div class="sheet-bd">
+      <div class="srow">
+        <div class="srow-label">底層真相 · Core Truth</div>
+        <div class="srow-text" id="sTruth"></div>
+      </div>
+      <div class="srow">
+        <div class="srow-label">首要作品 · First Work</div>
+        <div class="srow-text" id="sFirst"></div>
+      </div>
+      <div class="mvp-box">
+        <div class="mvp-label">Minimum Viable Action — do this first</div>
+        <div class="mvp-text" id="sMvp"></div>
+      </div>
+      <div class="srow" style="margin-top:16px;">
+        <div class="srow-label">Monetization</div>
+        <div class="srow-text r-mono-tag" id="sMono"></div>
+      </div>
+      <div class="sheet-actions">
+        <button class="s-btn s-btn-primary" id="sReadBtn">Read Full Role →</button>
+        <button class="s-btn s-btn-secondary" id="sLaunchBtn">Mark Launched ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   DATA
+══════════════════════════════════════════ */
+const CLUSTERS = [
+  { id:'cannabis', name:'Cannabis',          color:'#7A9E6A' },
+  { id:'body',     name:'Body Awareness',    color:'#D4956A' },
+  { id:'service',  name:'Service × Revenue', color:'#E07A7A' },
+  { id:'hands',    name:'Hands × Making',    color:'#C8A0D4' },
+  { id:'platform', name:'Platform × Identity',color:'#7A9E9F' },
+];
+
+const NODES = [
+  {
+    id:'N01', name:'Vape', zhName:'腦袋打了支針',
+    cluster:'cannabis', priority:'🔥',
+    tagline:'Cerebral reset tool for creative work',
+    monetization:'Affiliate — OCS, Spinach, 7ACRES',
+    mvp:'Write one personal experience article. No recommendations, just sensation. Affiliate link at end.',
+    truth:'Cannabis content is either too stoner or too wellness — both are performances. The real user resets her brain at 3pm, not to get high, but to reset. This user has never been described. The gap is the position.',
+    firstWork:'"腦袋打了支針 — 我點解用 vape 做 creative work." No recommendations. Only sensation. Accurate enough that readers say: how did you know that\'s my feeling?',
+    insight:'薰衣草 is your signature. The specificity is the 1-in-100 position. No one else says it. Saying it builds a memory that\'s yours alone.',
+    path:'文章 → 信任 → Affiliate 自然轉化 → 感受語言成為真正品牌資產',
+  },
+  {
+    id:'N02', name:'Edible', zhName:'落到成個身體',
+    cluster:'cannabis', priority:'📅',
+    tagline:'Body-state taxonomy, not THC percentages',
+    monetization:'Affiliate + quarterly update traffic',
+    mvp:'Write the 4-type body-state framework: 關機型 / 清醒型 / 深沉型 / Micro-dose. Publish it. It\'s the only classification system that answers "which should I choose today."',
+    truth:'All edible content describes the result — relaxed, asleep, laughed. Never the process. Never the geography of sensation: where it starts, which direction it moves, where it stops, what you can and can\'t do in that state. This description doesn\'t exist in Chinese.',
+    firstWork:'Framework article: how she developed the 4-type system. What she felt, what failed, what became pattern. The value is in the process, not the conclusion.',
+    insight:'You\'re not reviewing products. You\'re providing the only classification system that directly answers "what should I choose today." That utility is the whole brand.',
+    path:'框架文章 → 被分享（因為有用）→ 信任 → Affiliate 轉化 + Gym/Yoga 新讀者群',
+  },
+  {
+    id:'N03', name:'頸痛文章', zhName:'Stone完鬆返個瞓捩頸',
+    cluster:'body', priority:'📅',
+    tagline:'The neck pain article nobody dares write',
+    monetization:'Leads → N08 + N09 bookings',
+    mvp:'"Stone完鬆返個瞓捩頸" — write this article. Event-first structure, not guide format. Both Chinese and English versions.',
+    truth:'You can\'t solve neck pain you can\'t feel. Most people execute neck stretches without sensing the tissue. Cannabis amplified proprioception enough to feel the direction and boundary of each tight muscle. The real topic is proprioception, not cannabis.',
+    firstWork:'Article as event reconstruction: the night it happened → why this worked when nothing else did → how to recreate this without cannabis (slow down until you can feel, not just execute).',
+    insight:'"Stone完" is the condition, not the side story. Delete it and you have a generic neck pain article. Keep it and you have the only article that explains WHY.',
+    path:'文章 → 3 類讀者同時 → N08 按摩預約 → N09 指壓升級 → 身體意識系列錨點',
+  },
+  {
+    id:'N10', name:'Gym + Yoga', zhName:'Stoned完去的地方',
+    cluster:'body', priority:'🔮',
+    tagline:'Sensory field report: cannabis × movement',
+    monetization:'Google Maps SEO + cross-links to N01/N02',
+    mvp:'"Cannabis + Yoga之後，我的下犬式發生了這件事." One specific moment: feeling asymmetry in her sit bones for the first time.',
+    truth:'Cannabis + exercise content is either dry science or stoner bro content. No Chinese female, Asian wellness voice exists in this space. The window is open and no one is in it.',
+    firstWork:'The downward dog moment: she suddenly felt her two sit bones had different weights — right heavier than left. She\'d never sensed that asymmetry before. This single moment carries the whole piece.',
+    insight:'The asymmetry detail IS the article. Don\'t explain cannabis. Just describe what she felt with her sit bones. The reader fills in everything else.',
+    path:'文章 → Cannabis 社群 + Wellness 社群交叉 → 兩個全新讀者群共存',
+  },
+  {
+    id:'N08', name:'Massage $10', zhName:'Stop me — $10 · 10min',
+    cluster:'service', priority:'🔥',
+    tagline:'Remove every barrier. Shoulder + head only.',
+    monetization:'Direct cash — fastest revenue in the whole system',
+    mvp:'Calendly link + 1-sentence IG bio: "stop me $10 10min shoulder+head toronto." First 10 sessions free, collect 15-second reaction videos.',
+    truth:'The gap between "I need a massage" and "I actually book one" is enormous: appointment, location, $120, vulnerability with a stranger in a closed room. $10/10min eliminates this gap entirely. The price IS the design.',
+    firstWork:'First Reel: no words. Hands on shoulders, close-up. End: back view, shoulders visibly lower. Text: "stop me $10 10 min shoulder + head toronto."',
+    insight:'"Stop me" gives the client the initiative. It creates a scenario in their mind — she\'s somewhere, they intercept her. No medical weight. Just lightness.',
+    path:'Week 1: 10 free + reaction videos → Week 2: paid bookings → Month 2: N09 upgrade path activates naturally',
+  },
+  {
+    id:'N09', name:'Face 指壓', zhName:'鏡頭對自己的臉',
+    cluster:'service', priority:'📅',
+    tagline:'Ancient pressure points via body language, not theory',
+    monetization:'Booking upgrade from N08 clients',
+    mvp:'Film the self-care video first. Camera close on her own face. 7 points, 5–8 minutes. Publish before building any booking page.',
+    truth:'We store enormous stress in our faces but almost never touch it. Skincare touches the surface. Gua sha is routine without sensation. Most people have chronic temple pressure and jaw tension they\'ve never thought to directly address.',
+    firstWork:'Self-care video: camera on her face, demonstrating on herself. No lecture. One line per point: "按這裡，你會感受到一條線。那條線是你的壓力住的地方."',
+    insight:'Camera on her own face = invitation, not lecture. Intimacy without self-consciousness IS the trust signal. The camera distance says: I trust my face in front of you.',
+    path:'Video → 小紅書護膚社群 → 積累每天按的人 → 高質量 booking 轉化',
+  },
+  {
+    id:'N07', name:'Cat 貓咪的假期', zhName:'送貓去度假不是寄貓',
+    cluster:'service', priority:'🔥',
+    tagline:'Reframe owner guilt into owner pride',
+    monetization:'Cat sitting + future online course (demand-tested first)',
+    mvp:'3 tutorial videos: neck/shoulder blade → back along spine → head/behind ears. End each: "你的貓喜歡哪裡被按？" Comments = algorithm = more cat owners.',
+    truth:'Cat sitting services solve functional problems: food, litter, check-in photos. But the owner\'s REAL problem is emotional: "Am I a good owner? Did I let my cat down?" No existing service solves this.',
+    firstWork:'"送貓去度假不是寄貓" — article or Reel. The word "寄" contains passivity and guilt. "假期" contains planning and care. Same action, completely different owner identity.',
+    insight:'"假期" is not rebranding. It changes the owner\'s identity from "person who abandons cat" to "person who plans cat\'s holiday." She\'s not selling a service. She\'s selling a better self-image.',
+    path:'3 tutorials (demand test) → DM booking from social circle → cat reaction videos as social proof → online course if demand confirmed',
+  },
+  {
+    id:'N05', name:'Stained Glass', zhName:'光在玻璃裡不是被困住，是被轉化',
+    cluster:'hands', priority:'🔮',
+    tagline:'Liminal Lumière — light held in glass',
+    monetization:'Etsy + commissions + gallery exhibition',
+    mvp:'List 3 pieces on Etsy. Film same piece at 4 light times (morning / noon / dusk / candle). This video IS the sales tool.',
+    truth:'Stained glass = church in most minds. But the magic — light through glass, color on walls — works in any space. Pet Memory Box carries the most emotional weight in the entire 13-node system.',
+    firstWork:'Pet Memory Box article: about loss first, the product arrives last. Structure: what losing feels like → how we preserve memory → light and memory → how the box came to exist.',
+    insight:'Pet Memory Box: when the candle lights, the wall shows that animal\'s colors. Not memory. Presence. This distinction between memory and presence IS the product.',
+    path:'Etsy + Instagram → Pet Memory Box commissions → portfolio accumulation → Gallery exhibition (milestone) → Liminal Lumière as standalone art brand',
+  },
+  {
+    id:'N04', name:'Sewing', zhName:'用手思考',
+    cluster:'hands', priority:'🔮',
+    tagline:'Thinking happens in the hands, not in the head',
+    monetization:'Credibility builder — makes massage + cat care believable',
+    mvp:'Photograph 5–8 pieces. Caption each with the state, not the thing: "這件是在我最不想動的那個下午做的。做完我知道我為什麼不想動了."',
+    truth:'Modern society separates thinking from making. But craftspeople know: you don\'t design then execute — you discover while doing. The fabric\'s resistance tells you its density. The hand is the knowing organ.',
+    firstWork:'"點解我stoned完要做手縫." Not guide, not tutorial. One specific stitch where she suddenly felt the resistance was more than expected, and realized she\'d been executing, not sensing.',
+    insight:'Sewing = credibility, not income. Every piece says "these hands are serious" louder than any bio. This makes the massage and cat care believable.',
+    path:'No scale target. Function: CREDIBILITY → people believe her hands → trust massage → trust cat care → whole service cluster gets stronger',
+  },
+  {
+    id:'N06', name:'Macramé', zhName:'繩子告訴我它想去哪裡',
+    cluster:'hands', priority:'🔮',
+    tagline:'Minimum node. Maximum hand diversity signal.',
+    monetization:'Pinterest organic + multiself profile page',
+    mvp:'5 photos + Pinterest board. That\'s it. The whole minimum.',
+    truth:'The lightest node. Its only function: show her hands have worked in multiple materials. Macramé teaches less control, more following. The rope has its own logic.',
+    firstWork:'5 photos on multiself page + Pinterest board. Optional: short piece "繩子告訴我它想去哪裡" — about learning to follow material logic instead of imposing will.',
+    insight:'Macramé + Sewing + Stained Glass together = "her hands are serious about many different things." The combination is the argument. Each node alone is a person. All three together is a philosophy.',
+    path:'Pinterest → passive discovery → multiself page → credibility accumulation',
+  },
+  {
+    id:'N13', name:'multiself', zhName:'See a person in whole',
+    cluster:'platform', priority:'📅',
+    tagline:'Linktree\'s multiplayer version — she IS the best demo',
+    monetization:'Platform growth or sale to right operator',
+    mvp:'Her own multiself profile must be live first. 5 nodes minimum. Her profile IS the product demo. Without it, there\'s nothing to show.',
+    truth:'LinkedIn shows your title. Instagram shows your aesthetic. Linktree shows your links. Nothing shows you as a whole person. Multiself doesn\'t compress — it opens. Resume is out. Complexity is the proof of a real human.',
+    firstWork:'Her "about" text: not a bio. Why she believes people have many faces. Why making those faces visible matters more than hiding them. That "why" is the platform\'s soul.',
+    insight:'"Whole" in "see a person in whole" means as-a-whole, not complete. The un-definability IS the humanness. Cannot be fully defined = truly human.',
+    path:'Her own profile (demo) → 10 real users Week 1 → platform growth → OR honest sale to right operator',
+  },
+  {
+    id:'N11', name:'周星馳 YouTube', zhName:'前世今生',
+    cluster:'platform', priority:'🔮',
+    tagline:'Reincarnation reading of the Chow universe',
+    monetization:'Long-term brand building + multiself philosophy entry point',
+    mvp:'Episode 1: 至尊寶 × 韋小寶 — same soul, two eras. 25 minutes. The reincarnation framework IS the hook.',
+    truth:'Chow\'s characters are never pure comedians — they\'re souls pressed down by their era, trying to find expression. Reading them as one soul across reincarnations creates intellectual territory no one occupies. This IS multiself philosophy as film theory.',
+    firstWork:'Episode 1: the argument that 至尊寶 and 韋小寶 are the same soul in different eras. What did the soul learn between lives? What was it trying to resolve? 25 minutes is enough.',
+    insight:'This IS multiself: same soul, every version. The film theory is the platform philosophy. They\'re the same argument from two different directions.',
+    path:'Channel → multiself philosophy entry → long-term brand depth',
+  },
+  {
+    id:'N12', name:'multiself For Sale', zhName:'我喜歡建造，不喜歡管理',
+    cluster:'platform', priority:'🔮',
+    tagline:'Honest framing attracts exactly the right buyer',
+    monetization:'One-time exit',
+    mvp:'One page. Truth about current state, what\'s built, what isn\'t. "I\'m a builder not an operator." DM, not a form.',
+    truth:'She is a builder, not an operator. This is rare self-knowledge. The right buyer is an operator who wants a foundation that\'s already built. Honest framing attracts them faster than any marketing.',
+    firstWork:'One page: What it is → Current state (real numbers) → Why selling → DM. Person to person, not a funnel.',
+    insight:'"I\'m a builder not a manager" is not an apology. It\'s a precise self-description that attracts the exact right buyer — the person who IS a manager and wants a built platform.',
+    path:'Sale page → right operator finds it → one-time exit → Evelyn builds next thing',
+  },
+];
+
+const PRIORITY = [
+  { emoji:'🔥', id:'N08', name:'Massage $10/10min',    detail:'Calendly + IG bio → can start TODAY' },
+  { emoji:'🔥', id:'N07', name:'Cat 貓咪的假期',        detail:'3 tutorials + DM booking → this week' },
+  { emoji:'📅', id:'N03', name:'頸痛文章',               detail:'Highest SEO potential, anchors body series' },
+  { emoji:'📅', id:'N09', name:'Face 指壓',              detail:'Video first, booking after' },
+  { emoji:'📅', id:'N01', name:'Vape affiliate',         detail:'Contact brands, write personal experience' },
+  { emoji:'📅', id:'N13', name:'multiself launch',       detail:'10 real users in Week 1 target' },
+  { emoji:'🔮', id:'N05', name:'Liminal Lumière',        detail:'Build toward, not urgent' },
+  { emoji:'🔮', id:'N11', name:'周星馳 YouTube',          detail:'Long build, low urgency' },
+];
+
+/* Cluster lookup */
+const clusterMap = Object.fromEntries(CLUSTERS.map(c => [c.id, c]));
+const nodeMap    = Object.fromEntries(NODES.map(n => [n.id, n]));
+const byCluster  = Object.fromEntries(CLUSTERS.map(c => [c.id, []]));
+NODES.forEach(n => byCluster[n.cluster].push(n));
+
+/* ══════════════════════════════════════════
+   STATE + STORAGE
+══════════════════════════════════════════ */
+let currentTab   = 'map';
+let activeNodeId = null;
+let selectedRole = 'N01';
+let activeClusterId = null;
+
+function getProgress() {
+  try { return JSON.parse(localStorage.getItem('eve-progress') || '{}'); }
+  catch { return {}; }
+}
+function saveProgress(p) { localStorage.setItem('eve-progress', JSON.stringify(p)); }
+function toggleProgress(id) {
+  const p = getProgress();
+  p[id] = !p[id];
+  saveProgress(p);
+  return p[id];
+}
+function countDone(ids) {
+  const p = getProgress();
+  return ids.filter(id => p[id]).length;
+}
+
+/* ══════════════════════════════════════════
+   TAB SWITCHING
+══════════════════════════════════════════ */
+document.querySelectorAll('.bnav-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const name = tab.dataset.tab;
+    if (name === currentTab) return;
+    currentTab = name;
+    document.querySelectorAll('.bnav-tab').forEach(t => t.classList.toggle('active', t === tab));
+    document.querySelectorAll('.panel').forEach(p =>
+      p.classList.toggle('active', p.id === name + '-panel')
+    );
+    if (name === 'progress') renderProgress();
+    if (name === 'roles')    renderRoles();
+  });
+});
+
+/* ══════════════════════════════════════════
+   MAP TAB
+══════════════════════════════════════════ */
+(function buildMap() {
+  const cx = 160, cy = 160, outerR = 108, nodeR = 32;
+  const svg = document.getElementById('mapSvg');
+  const linesEl = document.getElementById('mapLines');
+  const clustersEl = document.getElementById('mapClusters');
+
+  /* Legend */
+  const legendEl = document.getElementById('mapLegend');
+  CLUSTERS.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'legend-item';
+    item.innerHTML = `<div class="legend-dot" style="background:${c.color}"></div>${c.name}`;
+    legendEl.appendChild(item);
+  });
+
+  /* Cluster positions (pentagon, top-first) */
+  const positions = CLUSTERS.map((c, i) => {
+    const angle = (-90 + i * 72) * Math.PI / 180;
+    return { ...c, x: cx + outerR * Math.cos(angle), y: cy + outerR * Math.sin(angle) };
+  });
+
+  positions.forEach(cp => {
+    /* Connection line */
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', cx); line.setAttribute('y1', cy);
+    line.setAttribute('x2', cp.x); line.setAttribute('y2', cp.y);
+    line.setAttribute('stroke', cp.color);
+    line.setAttribute('stroke-opacity', '0.18');
+    line.setAttribute('stroke-width', '1.5');
+    linesEl.appendChild(line);
+
+    /* Node sub-dots — fanned along the radial axis */
+    const clNodes = byCluster[cp.id];
+    clNodes.forEach((n, ni) => {
+      const fanAngle = (-90 + CLUSTERS.indexOf(cp) * 72 + (ni - (clNodes.length-1)/2) * 16) * Math.PI / 180;
+      const ndx = cx + (outerR + nodeR) * Math.cos(fanAngle);
+      const ndy = cy + (outerR + nodeR) * Math.sin(fanAngle);
+
+      /* dot-to-cluster line */
+      const sl = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      sl.setAttribute('x1', cp.x); sl.setAttribute('y1', cp.y);
+      sl.setAttribute('x2', ndx); sl.setAttribute('y2', ndy);
+      sl.setAttribute('stroke', cp.color); sl.setAttribute('stroke-opacity', '0.15');
+      sl.setAttribute('stroke-width', '0.8');
+      linesEl.appendChild(sl);
+
+      /* node dot */
+      const nd = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      nd.setAttribute('cx', ndx); nd.setAttribute('cy', ndy); nd.setAttribute('r', '5');
+      nd.setAttribute('fill', cp.color); nd.setAttribute('fill-opacity', '0.5');
+      nd.style.cursor = 'pointer';
+      nd.addEventListener('click', e => { e.stopPropagation(); openOverlay(n.id); });
+      linesEl.appendChild(nd);
+    });
+
+    /* Cluster group */
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.style.cursor = 'pointer';
+
+    const glow = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    glow.setAttribute('cx', cp.x); glow.setAttribute('cy', cp.y); glow.setAttribute('r', '22');
+    glow.setAttribute('fill', cp.color); glow.setAttribute('fill-opacity', '0.07');
+    g.appendChild(glow);
+
+    const circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circ.setAttribute('cx', cp.x); circ.setAttribute('cy', cp.y); circ.setAttribute('r', '16');
+    circ.setAttribute('fill', '#1A1612');
+    circ.setAttribute('stroke', cp.color); circ.setAttribute('stroke-opacity', '0.5');
+    circ.setAttribute('stroke-width', '1.5');
+    g.appendChild(circ);
+
+    const abbr = cp.name.split(' ').map(w => w[0]).join('').slice(0,2);
+    const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    txt.setAttribute('x', cp.x); txt.setAttribute('y', cp.y + 4);
+    txt.setAttribute('text-anchor', 'middle');
+    txt.setAttribute('font-family', 'Space Mono, monospace');
+    txt.setAttribute('font-size', '7');
+    txt.setAttribute('letter-spacing', '1');
+    txt.setAttribute('fill', cp.color);
+    txt.textContent = abbr.toUpperCase();
+    g.appendChild(txt);
+
+    g.addEventListener('click', () => toggleMapCluster(cp));
+    clustersEl.appendChild(g);
+  });
+})();
+
+function toggleMapCluster(cp) {
+  const info = document.getElementById('mapInfo');
+  if (activeClusterId === cp.id) {
+    activeClusterId = null;
+    info.classList.remove('show');
+    return;
+  }
+  activeClusterId = cp.id;
+  document.getElementById('mciLabel').textContent = cp.name.toUpperCase();
+  document.getElementById('mciLabel').style.color = cp.color;
+  const chips = document.getElementById('mciChips');
+  chips.innerHTML = '';
+  byCluster[cp.id].forEach(n => {
+    const chip = document.createElement('div');
+    chip.className = 'mci-chip';
+    chip.style.background = cp.color;
+    chip.textContent = n.id + ' · ' + n.name;
+    chip.addEventListener('click', () => openOverlay(n.id));
+    chips.appendChild(chip);
+  });
+  info.classList.add('show');
+}
+
+/* ══════════════════════════════════════════
+   NODES TAB
+══════════════════════════════════════════ */
+(function buildNodes() {
+  const list = document.getElementById('clusterList');
+  CLUSTERS.forEach(c => {
+    const section = document.createElement('div');
+    section.className = 'cluster-section';
+
+    const hd = document.createElement('div');
+    hd.className = 'cluster-header';
+    hd.innerHTML = `
+      <div class="cluster-dot" style="background:${c.color}"></div>
+      <div class="cluster-name" style="color:${c.color}">${c.name}</div>
+      <div class="cluster-meta">${byCluster[c.id].length} nodes</div>
+      <div class="cluster-chevron">›</div>
+    `;
+    hd.addEventListener('click', () => section.classList.toggle('open'));
+    section.appendChild(hd);
+
+    const nodesList = document.createElement('div');
+    nodesList.className = 'cluster-nodes-list';
+
+    byCluster[c.id].forEach(n => {
+      const card = document.createElement('div');
+      card.className = 'node-card';
+      card.innerHTML = `
+        <div class="nc-left">
+          <div class="nc-id">${n.id} · ${c.name}</div>
+          <div class="nc-name">${n.name}</div>
+          <div class="nc-zh">${n.zhName}</div>
+          <div class="nc-tagline">${n.tagline}</div>
+        </div>
+        <div class="nc-right">
+          <div class="nc-priority">${n.priority}</div>
+          <div class="nc-arrow">›</div>
+        </div>
+      `;
+      card.addEventListener('click', () => openOverlay(n.id));
+      nodesList.appendChild(card);
+    });
+    section.appendChild(nodesList);
+    list.appendChild(section);
+  });
+})();
+
+/* ══════════════════════════════════════════
+   NODE DETAIL OVERLAY
+══════════════════════════════════════════ */
+function openOverlay(nodeId) {
+  const n = nodeMap[nodeId];
+  const c = clusterMap[n.cluster];
+  activeNodeId = nodeId;
+
+  document.getElementById('sEyebrow').textContent = `${n.id} · ${c.name}`;
+  document.getElementById('sEyebrow').style.color = c.color;
+  document.getElementById('sName').textContent = n.name;
+  document.getElementById('sZh').textContent = n.zhName;
+  document.getElementById('sTruth').textContent = n.truth;
+  document.getElementById('sFirst').textContent = n.firstWork;
+  document.getElementById('sMvp').textContent = n.mvp;
+  document.getElementById('sMono').textContent = n.monetization;
+
+  const done = getProgress()[nodeId];
+  const btn = document.getElementById('sLaunchBtn');
+  btn.classList.toggle('launched', !!done);
+  btn.textContent = done ? '✓ Launched!' : 'Mark Launched ✓';
+
+  document.getElementById('sReadBtn').onclick = () => {
+    closeOverlay();
+    goToRole(nodeId);
+  };
+  btn.onclick = () => {
+    const now = toggleProgress(nodeId);
+    btn.classList.toggle('launched', now);
+    btn.textContent = now ? '✓ Launched!' : 'Mark Launched ✓';
+    if (currentTab === 'progress') renderProgress();
+  };
+
+  document.getElementById('overlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeOverlay() {
+  document.getElementById('overlay').classList.remove('show');
+  document.body.style.overflow = '';
+  activeNodeId = null;
+}
+
+document.getElementById('overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('overlay')) closeOverlay();
+});
+
+/* Swipe down to close */
+let touchStartY = 0;
+document.getElementById('sheet').addEventListener('touchstart', e => {
+  touchStartY = e.touches[0].clientY;
+});
+document.getElementById('sheet').addEventListener('touchend', e => {
+  if (e.changedTouches[0].clientY - touchStartY > 80 && document.getElementById('sheet').scrollTop <= 2) {
+    closeOverlay();
+  }
+});
+
+/* ══════════════════════════════════════════
+   PROGRESS TAB
+══════════════════════════════════════════ */
+function renderProgress() {
+  const p = getProgress();
+  const all = NODES.map(n => n.id);
+  const done = all.filter(id => p[id]).length;
+  const total = all.length;
+  const pct = done / total;
+
+  document.getElementById('ringN').textContent = done;
+  document.getElementById('ringOf').textContent = '/ ' + total;
+
+  const circumference = 2 * Math.PI * 54; /* r=54 */
+  const offset = circumference * (1 - pct);
+  document.getElementById('ringFill').setAttribute('stroke-dashoffset', offset);
+
+  const phrases = ['tap any node to toggle', 'keep going', '🔥 good start', '📅 momentum building', '🔮 getting there', 'halfway there', 'more than half!', 'almost done', 'so close', 'nearly complete', 'just one more', 'all launched!'];
+  const idx = Math.min(Math.round(done / total * (phrases.length-1)), phrases.length-1);
+  document.getElementById('progTagline').textContent = phrases[idx];
+
+  const container = document.getElementById('progClusters');
+  container.innerHTML = '';
+
+  CLUSTERS.forEach(c => {
+    const cNodes = byCluster[c.id];
+    const cDone  = cNodes.filter(n => p[n.id]).length;
+    const cPct   = cNodes.length ? cDone / cNodes.length : 0;
+
+    const sec = document.createElement('div');
+    sec.className = 'pc-section';
+    sec.innerHTML = `
+      <div class="pc-hd">
+        <div class="pc-dot" style="background:${c.color}"></div>
+        <div class="pc-name" style="color:${c.color}">${c.name}</div>
+        <div class="pc-ratio">${cDone}/${cNodes.length}</div>
+      </div>
+      <div class="pc-bar-track">
+        <div class="pc-bar-fill" style="background:${c.color}; width:${cPct*100}%"></div>
+      </div>
+      <div class="pc-items"></div>
+    `;
+    const itemsEl = sec.querySelector('.pc-items');
+    cNodes.forEach(n => {
+      const item = document.createElement('div');
+      item.className = 'pci' + (p[n.id] ? ' done' : '');
+      item.innerHTML = `
+        <div class="pci-cb"><div class="pci-cb-inner"></div></div>
+        <div class="pci-lbl">${n.id} · ${n.name.replace(' $10','')}</div>
+      `;
+      item.addEventListener('click', () => {
+        const now = toggleProgress(n.id);
+        item.classList.toggle('done', now);
+        renderProgress();
+      });
+      itemsEl.appendChild(item);
+    });
+    container.appendChild(sec);
+  });
+}
+
+/* ══════════════════════════════════════════
+   ROLES TAB
+══════════════════════════════════════════ */
+function goToRole(nodeId) {
+  selectedRole = nodeId;
+  currentTab = 'roles';
+  document.querySelectorAll('.bnav-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'roles'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === 'roles-panel'));
+  renderRoles();
+}
+
+function renderRoles() {
+  /* Picker */
+  const rpInner = document.getElementById('rpInner');
+  rpInner.innerHTML = '';
+  NODES.forEach(n => {
+    const c = clusterMap[n.cluster];
+    const pill = document.createElement('div');
+    pill.className = 'rp-pill' + (n.id === selectedRole ? ' active' : '');
+    pill.innerHTML = `<div class="rp-pill-dot" style="background:${c.color}"></div>${n.id}`;
+    pill.addEventListener('click', () => { selectedRole = n.id; renderRoles(); });
+    rpInner.appendChild(pill);
+  });
+
+  /* Scroll active pill into view */
+  const active = rpInner.querySelector('.active');
+  if (active) active.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+
+  /* Content */
+  const n = nodeMap[selectedRole];
+  const c = clusterMap[n.cluster];
+  const body = document.getElementById('rolesBody');
+
+  body.innerHTML = `
+    <div class="r-eyebrow" style="color:${c.color}">${c.name.toUpperCase()}</div>
+    <div class="r-name">${n.name}</div>
+    <div class="r-zh">${n.zhName}</div>
+
+    <div class="rs">
+      <div class="rs-title">底層真相 · Core Truth</div>
+      <div class="rs-body"><p>${n.truth}</p></div>
+    </div>
+
+    <div class="rs">
+      <div class="rs-title">首要作品 · First Work</div>
+      <div class="rs-body"><p>${n.firstWork}</p></div>
+    </div>
+
+    <div class="rs">
+      <div class="rs-title">關鍵洞察 · Key Insight</div>
+      <div class="rs-quote" style="border-color:${c.color}">${n.insight}</div>
+    </div>
+
+    <div class="rs">
+      <div class="rs-title">Minimum Viable Action</div>
+      <div class="path-box"><span class="path-arrow" style="color:${c.color}">→ </span>${n.mvp}</div>
+    </div>
+
+    <div class="rs">
+      <div class="rs-title">Path</div>
+      <div class="path-box">${n.path}</div>
+    </div>
+
+    <div class="rs">
+      <div class="rs-title">Monetization</div>
+      <div class="r-mono-tag">${n.monetization}</div>
+    </div>
+  `;
+  body.scrollTop = 0;
+}
+
+/* ══════════════════════════════════════════
+   ABOUT TAB — Priority list
+══════════════════════════════════════════ */
+(function buildAbout() {
+  const list = document.getElementById('priList');
+  PRIORITY.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'pri-item';
+    div.innerHTML = `
+      <div class="pri-emoji">${item.emoji}</div>
+      <div class="pri-body">
+        <div class="pri-name">${item.name}</div>
+        <div class="pri-detail">${item.detail}</div>
+      </div>
+      <div class="pri-num">${i + 1}</div>
+    `;
+    div.addEventListener('click', () => openOverlay(item.id));
+    list.appendChild(div);
+  });
+})();
+
+/* ══════════════════════════════════════════
+   INIT
+══════════════════════════════════════════ */
+renderProgress();
+renderRoles();
+</script>
+</body>
+</html>

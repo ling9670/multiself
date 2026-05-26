@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#13100D">
+  <meta property="og:title" content="multiself — Same you. Every version.">
+  <meta property="og:description" content="The platform that shows you as a whole person. Not just your best angle.">
+  <meta property="og:url" content="https://ling9670.github.io/multiself/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="multiself — Same you. Every version.">
+  <meta name="twitter:description" content="The platform that shows you as a whole person. Not just your best angle.">
+  <title>multiself — Same you. Every version.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #13100D;
+      --bg2:      #1A1612;
+      --bg3:      #252019;
+      --accent:   #D4956A;
+      --sand:     #C8B89A;
+      --text:     #E8E0D4;
+      --text-mid: #9A8E82;
+      --text-dim: #5C5248;
+      --radius:   14px;
+      --ease:     cubic-bezier(0.4, 0, 0.2, 1);
+
+      --cannabis: #7A9E6A;
+      --service:  #E07A7A;
+      --hands:    #C8A0D4;
+      --platform: #7A9E9F;
+      --body-c:   #D4956A;
+    }
+
+    html {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 28px;
+      background: rgba(19,16,13,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(200,184,154,0.07);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-cta {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      padding: 9px 18px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 24px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ambient glow */
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--accent)12 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(48px, 10vw, 96px);
+      font-weight: 300;
+      line-height: 1.0;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(20px, 4vw, 28px);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text-mid);
+      margin-bottom: 48px;
+      line-height: 1.4;
+      max-width: 560px;
+    }
+
+    /* hero CTA group */
+    .hero-cta-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 72px;
+    }
+
+    .cta-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      padding: 16px 32px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .cta-main:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    .cta-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    /* ── MINI DEMO ── */
+    .mini-demo {
+      width: 100%;
+      max-width: 360px;
+      background: var(--bg2);
+      border-radius: 20px;
+      border: 1px solid rgba(200,184,154,0.1);
+      overflow: hidden;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+    }
+
+    .demo-header {
+      padding: 16px 18px 12px;
+      border-bottom: 1px solid rgba(200,184,154,0.07);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .demo-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, var(--accent), #7A5030);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      color: var(--bg);
+    }
+
+    .demo-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .demo-loc {
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .demo-pills {
+      display: flex;
+      gap: 6px;
+      padding: 12px 18px;
+      overflow: hidden;
+    }
+
+    .demo-pill {
+      padding: 5px 12px;
+      border-radius: 100px;
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition: all 0.5s var(--ease);
+    }
+
+    .demo-content {
+      padding: 0 18px 18px;
+    }
+
+    .demo-hero-bar {
+      height: 80px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      transition: background 0.6s var(--ease);
+      display: flex;
+      align-items: flex-end;
+      padding: 10px 12px;
+    }
+
+    .demo-cluster {
+      font-family: 'Space Mono', monospace;
+      font-size: 7px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 100px;
+      color: var(--bg);
+      transition: background 0.6s var(--ease);
+    }
+
+    .demo-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      margin-bottom: 4px;
+      transition: all 0.4s var(--ease);
+    }
+
+    .demo-tag {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12px;
+      font-style: italic;
+      color: var(--accent);
+      margin-bottom: 10px;
+      transition: all 0.4s var(--ease);
+    }
+
+    .demo-desc {
+      font-size: 10px;
+      line-height: 1.7;
+      color: var(--text-mid);
+      margin-bottom: 14px;
+    }
+
+    .demo-btn {
+      display: inline-block;
+      padding: 7px 16px;
+      border-radius: 100px;
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--bg);
+      transition: background 0.6s var(--ease);
+    }
+
+    /* ── SECTION BASE ── */
+    section {
+      padding: 100px 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 6vw, 52px);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .section-title em { font-style: italic; color: var(--accent); }
+
+    .section-body {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--text-mid);
+      max-width: 600px;
+    }
+
+    /* ── AI ERA SECTION ── */
+    .ai-section {
+      border-top: 1px solid rgba(200,184,154,0.08);
+      border-bottom: 1px solid rgba(200,184,154,0.08);
+      background: var(--bg2);
+    }
+
+    .ai-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 100px 24px;
+      text-align: center;
+    }
+
+    .ai-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(22px, 4vw, 34px);
+      font-weight: 300;
+      line-height: 1.55;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .ai-quote strong {
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    .ai-sub {
+      font-size: 14px;
+      color: var(--text-mid);
+      line-height: 1.75;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ── USE CASES ── */
+    .cases-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 52px;
+    }
+
+    @media (min-width: 640px) { .cases-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 960px) { .cases-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .case-card {
+      background: var(--bg2);
+      border: 1px solid rgba(200,184,154,0.08);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      transition: border-color 0.2s;
+    }
+    .case-card:hover { border-color: rgba(212,149,106,0.25); }
+
+    .case-dots {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .case-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .case-who {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+
+    .case-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+
+    .case-desc {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-mid);
+    }
+
+    /* ── HOW IT WORKS ── */
+    .steps {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+      margin-top: 52px;
+      position: relative;
+    }
+
+    @media (min-width: 800px) { .steps { grid-template-columns: repeat(3, 1fr); } }
+
+    .step-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 64px;
+      font-weight: 300;
+      color: rgba(212,149,106,0.12);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .step-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .step-desc {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--text-mid);
+    }
+
+    /* ── PRICING ── */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 52px;
+    }
+
+    @media (min-width: 640px) { .pricing-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .price-card {
+      background: var(--bg2);
+      border: 1px solid rgba(200,184,154,0.08);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      position: relative;
+    }
+
+    .price-card.featured {
+      border-color: var(--accent);
+      background: rgba(212,149,106,0.05);
+    }
+
+    .price-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: var(--bg);
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
+    .price-tier {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+    }
+
+    .price-amount {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px;
+      font-weight: 300;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .price-amount span {
+      font-size: 18px;
+      color: var(--text-mid);
+    }
+
+    .price-period {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+      margin-bottom: 24px;
+    }
+
+    .price-features {
+      list-style: none;
+      margin-bottom: 28px;
+    }
+
+    .price-features li {
+      font-size: 13px;
+      color: var(--text-mid);
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(200,184,154,0.06);
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      line-height: 1.4;
+    }
+
+    .price-features li::before {
+      content: '—';
+      color: var(--text-dim);
+      flex-shrink: 0;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      margin-top: 1px;
+    }
+
+    .price-features li.included::before { content: '✓'; color: var(--accent); }
+
+    .price-btn {
+      display: block;
+      text-align: center;
+      padding: 13px;
+      border-radius: 100px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .price-btn:hover { opacity: 0.82; }
+
+    .price-btn-accent {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    .price-btn-ghost {
+      border: 1px solid rgba(200,184,154,0.2);
+      color: var(--text-mid);
+    }
+
+    /* ── WAITLIST ── */
+    .waitlist-section {
+      text-align: center;
+      padding: 120px 24px;
+      background: var(--bg2);
+      border-top: 1px solid rgba(200,184,154,0.08);
+    }
+
+    .waitlist-inner { max-width: 520px; margin: 0 auto; }
+
+    .waitlist-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 7vw, 60px);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .waitlist-title em { font-style: italic; color: var(--accent); }
+
+    .waitlist-sub {
+      font-size: 15px;
+      color: var(--text-mid);
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    .waitlist-form {
+      display: flex;
+      gap: 10px;
+      flex-direction: column;
+      max-width: 400px;
+      margin: 0 auto 16px;
+    }
+
+    @media (min-width: 480px) { .waitlist-form { flex-direction: row; } }
+
+    .waitlist-input {
+      flex: 1;
+      background: var(--bg3);
+      border: 1px solid rgba(200,184,154,0.12);
+      border-radius: 100px;
+      padding: 14px 22px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .waitlist-input::placeholder { color: var(--text-dim); }
+    .waitlist-input:focus { border-color: var(--accent); }
+
+    .waitlist-submit {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: 100px;
+      padding: 14px 28px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+    }
+    .waitlist-submit:hover { opacity: 0.85; }
+
+    .waitlist-note {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    /* ── DEMO LINK ── */
+    .demo-link-section {
+      text-align: center;
+      padding: 48px 24px;
+    }
+
+    .demo-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      text-decoration: none;
+      border: 1px solid rgba(200,184,154,0.12);
+      padding: 13px 24px;
+      border-radius: 100px;
+      transition: all 0.2s;
+    }
+    .demo-link:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 32px 28px;
+      border-top: 1px solid rgba(200,184,154,0.07);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: gap;
+      gap: 12px;
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+    }
+
+    .footer-copy {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#">multi<span>self</span></a>
+    <a class="nav-cta" href="#waitlist">Get early access</a>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <p class="hero-eyebrow">Early access · 2026</p>
+    <h1 class="hero-title">Same you.<br><em>Every version.</em></h1>
+    <p class="hero-subtitle">The platform that shows you as a whole person — not just your best angle.</p>
+
+    <div class="hero-cta-group">
+      <a href="#waitlist" class="cta-main">Join the waitlist ↗</a>
+      <p class="cta-sub">Free to start · No credit card needed</p>
+    </div>
+
+    <!-- ANIMATED MINI DEMO -->
+    <div class="mini-demo">
+      <div class="demo-header">
+        <div class="demo-avatar">E</div>
+        <div>
+          <div class="demo-name">Evelyn</div>
+          <div class="demo-loc">North York · Toronto</div>
+        </div>
+      </div>
+
+      <div class="demo-pills" id="demoPills"></div>
+
+      <div class="demo-content">
+        <div class="demo-hero-bar" id="demoBar">
+          <span class="demo-cluster" id="demoCluster"></span>
+        </div>
+        <div class="demo-title" id="demoTitle"></div>
+        <div class="demo-tag" id="demoTag"></div>
+        <div class="demo-desc" id="demoDesc"></div>
+        <div class="demo-btn" id="demoBtn"></div>
+      </div>
+    </div>
+
+    <div class="demo-link-section">
+      <a href="https://ling9670.github.io/multiself/evelyn-profile.html" class="demo-link">
+        See Evelyn's full profile →
+      </a>
+    </div>
+  </section>
+
+  <!-- ── AI ERA ── -->
+  <div class="ai-section">
+    <div class="ai-inner">
+      <p class="section-label">Why multiself · Why now</p>
+      <p class="ai-quote">
+        In 2026, AI gives everyone a <strong>perfect single persona.</strong><br>
+        All of them start to look the same.<br><br>
+        multiself goes the other direction —<br>
+        <strong>every version of you, visible at once.</strong><br>
+        More sides. More ways for the right people to find you.
+      </p>
+      <p class="ai-sub" style="margin-top:28px;">
+        The massage therapist who also does stained glass who also writes about cannabis — that combination is proof of a real human. multiself is where your complexity becomes your advantage.
+      </p>
+    </div>
+  </div>
+
+  <!-- ── USE CASES ── -->
+  <section>
+    <p class="section-label">Who it's for</p>
+    <h2 class="section-title">You contain multitudes.<br><em>Now people can find all of them.</em></h2>
+
+    <div class="cases-grid">
+      <div class="case-card">
+        <div class="case-dots">
+          <div class="case-dot" style="background:#E07A7A"></div>
+          <div class="case-dot" style="background:#C8A0D4"></div>
+          <div class="case-dot" style="background:#7A9E9F"></div>
+        </div>
+        <p class="case-who">Solopreneur</p>
+        <h3 class="case-title">Consultant · Course Creator · Author</h3>
+        <p class="case-desc">Three revenue streams, one person. Your clients from consulting never discover the course. Your readers don't know you consult. multiself connects everything — more ways to work together.</p>
+      </div>
+
+      <div class="case-card">
+        <div class="case-dots">
+          <div class="case-dot" style="background:#7A9E6A"></div>
+          <div class="case-dot" style="background:#D4956A"></div>
+          <div class="case-dot" style="background:#D4C06A"></div>
+        </div>
+        <p class="case-who">Creative Professional</p>
+        <h3 class="case-title">Photographer · Yoga Teacher · Writer</h3>
+        <p class="case-desc">Instagram shows your photography. LinkedIn shows your corporate past. Neither shows the full person. The right collaborators need to see all three before they know they want you.</p>
+      </div>
+
+      <div class="case-card">
+        <div class="case-dots">
+          <div class="case-dot" style="background:#7A9E9F"></div>
+          <div class="case-dot" style="background:#E07A7A"></div>
+          <div class="case-dot" style="background:#C8A0D4"></div>
+        </div>
+        <p class="case-who">Before You Work Together</p>
+        <h3 class="case-title">Co-founder · Partner · Collaborator</h3>
+        <p class="case-desc">Resume tells you what someone did. multiself tells you who they are. Before you hire, partner, or invest — see the whole person. The interests, the side work, the worldview that doesn't fit a title.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ── -->
+  <section style="border-top:1px solid rgba(200,184,154,0.07);">
+    <p class="section-label">How it works</p>
+    <h2 class="section-title">Three steps.<br><em>One complete you.</em></h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3 class="step-title">Create your profile</h3>
+        <p class="step-desc">Pick a username. Your profile lives at multiself.com/you. Takes two minutes — no design skills, no code, no blank page staring back at you.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3 class="step-title">Add your identities</h3>
+        <p class="step-desc">Each identity gets its own page — a name, an image, a description, your links. Start with three. Add more as you grow. Each one is a different door into the same person.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3 class="step-title">Share one link</h3>
+        <p class="step-desc">Put it in your Instagram bio, your email signature, your Slack profile. One link. Every version of you. Let people find the part of you that's right for them.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PRICING ── -->
+  <section style="border-top:1px solid rgba(200,184,154,0.07);" id="pricing">
+    <p class="section-label">Pricing</p>
+    <h2 class="section-title">Start free.<br><em>Grow when you're ready.</em></h2>
+
+    <div class="pricing-grid">
+      <div class="price-card">
+        <p class="price-tier">Free</p>
+        <div class="price-amount">$<span>0</span></div>
+        <p class="price-period">forever</p>
+        <ul class="price-features">
+          <li class="included">3 identity modules</li>
+          <li class="included">multiself.com/username</li>
+          <li class="included">All templates</li>
+          <li class="included">Basic view analytics</li>
+          <li>"Built with multiself" badge</li>
+        </ul>
+        <a href="#waitlist" class="price-btn price-btn-ghost">Get started</a>
+      </div>
+
+      <div class="price-card featured">
+        <div class="price-badge">Most popular</div>
+        <p class="price-tier">Creator</p>
+        <div class="price-amount">$<span style="font-size:48px;">9</span></div>
+        <p class="price-period">per month · or $90/year</p>
+        <ul class="price-features">
+          <li class="included">8 identity modules</li>
+          <li class="included">Custom domain</li>
+          <li class="included">Full analytics dashboard</li>
+          <li class="included">No badge</li>
+          <li class="included">Priority templates</li>
+          <li class="included">Link scheduling</li>
+        </ul>
+        <a href="#waitlist" class="price-btn price-btn-accent">Start free trial</a>
+      </div>
+
+      <div class="price-card">
+        <p class="price-tier">Pro</p>
+        <div class="price-amount">$<span>19</span></div>
+        <p class="price-period">per month · or $190/year</p>
+        <ul class="price-features">
+          <li class="included">Unlimited modules</li>
+          <li class="included">Custom domain</li>
+          <li class="included">Analytics + audience insights</li>
+          <li class="included">Booking integrations</li>
+          <li class="included">Team profiles (up to 5)</li>
+          <li class="included">Priority support</li>
+        </ul>
+        <a href="#waitlist" class="price-btn price-btn-ghost">Join waitlist</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WAITLIST ── -->
+  <div class="waitlist-section" id="waitlist">
+    <div class="waitlist-inner">
+      <p class="section-label">Early access</p>
+      <h2 class="waitlist-title">Your whole self<br><em>deserves one place.</em></h2>
+      <p class="waitlist-sub">multiself is in early access. Join the waitlist and be among the first to build your profile — free for as long as you're early.</p>
+
+      <!-- Web3Forms — get free access key at web3forms.com/access-key (enter eveonhighray@gmail.com) -->
+      <form class="waitlist-form" id="waitlistForm" onsubmit="handleSubmit(event)">
+        <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY">
+        <input type="hidden" name="subject" value="New multiself waitlist signup">
+        <input type="hidden" name="from_name" value="multiself waitlist">
+        <input class="waitlist-input" type="email" name="email" placeholder="your@email.com" required id="emailInput">
+        <button class="waitlist-submit" type="submit" id="submitBtn">Join waitlist</button>
+      </form>
+      <p class="waitlist-note" id="formNote">Free to start · No credit card · Early access perks</p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">multiself</div>
+    <p class="footer-copy">© 2026 multiself · Toronto</p>
+  </footer>
+
+  <script>
+    /* ── MINI DEMO ANIMATION ── */
+    const demoNodes = [
+      { pill:'Massage', cluster:'Service', color:'#E07A7A', title:'Massage Therapist', tag:'Stop me — $10 · 10 min', desc:'Shoulder and head. No appointment. You stop me, you decide.', btn:'Book now ↗' },
+      { pill:'Glass', cluster:'Hands', color:'#C8A0D4', title:'Liminal Lumière', tag:'光在玻璃裡不是被困住，是被轉化', desc:'Stained glass. Pet Memory Box. Light that holds memory.', btn:'View shop ↗' },
+      { pill:'Cannabis', cluster:'Cannabis', color:'#7A9E6A', title:'Cannabis Writer', tag:'腦袋打了支針', desc:'Not a stoner. Not wellness. Someone who can describe what actually happens.', btn:'Read article ↗' },
+      { pill:'multiself', cluster:'Platform', color:'#7A9E9F', title:'multiself · Founder', tag:'See a person in whole', desc:'Built this platform. This demo is the proof.', btn:'Create yours ↗' },
+      { pill:'Cat Care', cluster:'Service', color:'#E07A7A', title:'貓咪的假期', tag:'Your cat goes on holiday', desc:'Not a sitter. A cat reader. Knows when to not interact.', btn:'Book a stay ↗' },
+    ];
+
+    let demoIdx = 0;
+
+    function updateDemo(idx) {
+      const n = demoNodes[idx];
+      const bar = document.getElementById('demoBar');
+      const cluster = document.getElementById('demoCluster');
+      const title = document.getElementById('demoTitle');
+      const tag = document.getElementById('demoTag');
+      const desc = document.getElementById('demoDesc');
+      const btn = document.getElementById('demoBtn');
+      const pills = document.getElementById('demoPills');
+
+      bar.style.background = `radial-gradient(ellipse at 30% 50%, ${n.color}40 0%, ${n.color}10 60%, transparent 100%), linear-gradient(135deg, ${n.color}20, #1A1612)`;
+      cluster.style.background = n.color;
+      cluster.textContent = n.cluster;
+      title.textContent = n.title;
+      tag.textContent = n.tag;
+      desc.textContent = n.desc;
+      btn.textContent = n.btn;
+      btn.style.background = n.color;
+
+      // rebuild pills
+      pills.innerHTML = demoNodes.map((dn, i) => `
+        <div class="demo-pill" style="${i === idx
+          ? `background:${dn.color};color:#13100D;font-weight:700;`
+          : `background:#252019;color:#5C5248;`}">${dn.pill}</div>
+      `).join('');
+    }
+
+    updateDemo(0);
+
+    setInterval(() => {
+      demoIdx = (demoIdx + 1) % demoNodes.length;
+      updateDemo(demoIdx);
+    }, 2800);
+
+    /* ── WAITLIST — Web3Forms ── */
+    async function handleSubmit(e) {
+      e.preventDefault();
+      const form = document.getElementById('waitlistForm');
+      const note = document.getElementById('formNote');
+      const btn  = document.getElementById('submitBtn');
+      const email = document.getElementById('emailInput').value;
+
+      btn.textContent = 'Joining...';
+      btn.style.opacity = '0.7';
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: new FormData(form)
+        });
+        const data = await res.json();
+        if (data.success) {
+          note.textContent = `✓ ${email} is on the list. We'll be in touch.`;
+          note.style.color = '#7A9E6A';
+          document.getElementById('emailInput').value = '';
+          btn.textContent = 'Joined ✓';
+        } else {
+          throw new Error(data.message);
+        }
+      } catch (err) {
+        note.textContent = 'Something went wrong. DM us on Instagram @multiself';
+        note.style.color = '#E07A7A';
+        btn.textContent = 'Join waitlist';
+        btn.style.opacity = '1';
+      }
+    }
+  </script>
+</body>
+</html>
