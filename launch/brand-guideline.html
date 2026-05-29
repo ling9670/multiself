@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Multiself — Brand Guideline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper:    #F4EFE5;
+    --paper-2:  #EBE3D4;
+    --card:     #FBF8F1;
+    --ink:      #211C16;
+    --ink-soft: #6E6557;
+    --ink-faint:#9A9080;
+    --line:     #E3D9C7;
+    --gold:     #B0905A;
+
+    --cat:   oklch(0.56 0.085 45);
+    --catd:  oklch(0.40 0.075 42);
+    --catt:  oklch(0.96 0.018 60);
+    --farm:  oklch(0.55 0.075 140);
+    --farmd: oklch(0.40 0.065 140);
+    --farmt: oklch(0.96 0.02 135);
+    --glass: oklch(0.52 0.09 330);
+    --glassd:oklch(0.38 0.08 330);
+    --glasst:oklch(0.96 0.022 330);
+
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans:  'Jost', system-ui, sans-serif;
+    --mono:  'Space Mono', monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--sans); font-weight: 300;
+    -webkit-font-smoothing: antialiased; line-height: 1.6;
+  }
+  .wrap { max-width: 940px; margin: 0 auto; padding: 0 40px; }
+
+  /* kicker / number */
+  .num { font-family: var(--mono); font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); }
+
+  h1,h2,h3 { font-family: var(--serif); font-weight: 600; margin: 0; line-height: 1.02; letter-spacing: .005em; }
+
+  /* ===== COVER ===== */
+  .cover {
+    min-height: 92vh; display: flex; flex-direction: column; justify-content: center;
+    background:
+      radial-gradient(80% 60% at 18% 18%, var(--catt), transparent 55%),
+      radial-gradient(70% 60% at 88% 30%, var(--glasst), transparent 55%),
+      radial-gradient(80% 70% at 60% 95%, var(--farmt), transparent 55%),
+      var(--paper);
+  }
+  .cover .num { margin-bottom: 28px; }
+  .wordmark { font-family: var(--serif); font-weight: 500; font-size: clamp(64px, 13vw, 150px); line-height: .86; letter-spacing: -.01em; }
+  .wordmark em { font-style: italic; color: var(--gold); }
+  .cover .lede { font-family: var(--serif); font-style: italic; font-size: clamp(22px, 3.4vw, 34px); color: var(--ink-soft); margin-top: 26px; max-width: 620px; line-height: 1.3; }
+  .cover .foot { margin-top: 54px; display: flex; gap: 40px; flex-wrap: wrap; font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-faint); }
+  .cover .foot b { color: var(--ink); font-weight: 400; display: block; margin-top: 5px; font-size: 11px; letter-spacing: .1em; }
+
+  /* ===== SECTION ===== */
+  section { padding: 84px 0; border-top: 1px solid var(--line); }
+  .sec-intro { max-width: 680px; }
+  .sec-intro h2 { font-size: clamp(34px, 5vw, 52px); margin: 16px 0 0; }
+  .sec-intro p { font-size: 17px; color: var(--ink-soft); margin: 22px 0 0; text-wrap: pretty; }
+  .sec-intro p.big { font-family: var(--serif); font-style: italic; font-size: 24px; color: var(--ink); line-height: 1.4; }
+
+  .grid { display: grid; gap: 22px; margin-top: 48px; }
+  .g2 { grid-template-columns: 1fr 1fr; }
+  .g3 { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 720px){ .g2,.g3{ grid-template-columns: 1fr; } .wrap{ padding: 0 24px; } }
+
+  /* ===== CONCEPT pillars ===== */
+  .pillar { border-top: 2px solid var(--ink); padding-top: 18px; }
+  .pillar h3 { font-size: 25px; }
+  .pillar p { font-size: 14.5px; color: var(--ink-soft); margin: 10px 0 0; }
+
+  /* ===== COLOR ===== */
+  .swatch { border-radius: 16px; overflow: hidden; border: 1px solid var(--line); background: var(--card); }
+  .swatch .chip { height: 132px; }
+  .swatch .meta { padding: 14px 16px; }
+  .swatch .nm { font-family: var(--serif); font-size: 20px; }
+  .swatch .role { font-family: var(--mono); font-size: 9px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+  .swatch .val { font-family: var(--mono); font-size: 10px; color: var(--ink-soft); margin-top: 8px; line-height: 1.7; }
+  .swatch .val span { color: var(--ink-faint); }
+
+  .neutrals { display: flex; flex-wrap: wrap; gap: 0; margin-top: 28px; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); }
+  .neutral { flex: 1; min-width: 110px; padding: 20px 16px 16px; height: 120px; display: flex; flex-direction: column; justify-content: flex-end; }
+  .neutral .nm { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; }
+  .neutral .hx { font-family: var(--mono); font-size: 9px; opacity: .7; margin-top: 3px; }
+
+  /* ===== TYPE ===== */
+  .type-row { border-top: 1px solid var(--line); padding: 26px 0; display: grid; grid-template-columns: 150px 1fr; gap: 24px; align-items: baseline; }
+  .type-row:first-of-type { border-top: none; }
+  .type-label { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); line-height: 1.7; }
+  .type-label b { display: block; color: var(--ink); font-size: 11px; letter-spacing: .08em; }
+  .specimen-serif { font-family: var(--serif); color: var(--ink); }
+  .specimen-sans { font-family: var(--sans); color: var(--ink); }
+  .specimen-mono { font-family: var(--mono); color: var(--ink); }
+  .scale li { list-style: none; margin: 0 0 10px; display: flex; align-items: baseline; gap: 16px; }
+  .scale .s { font-family: var(--mono); font-size: 9px; color: var(--ink-faint); width: 88px; flex-shrink: 0; letter-spacing: .08em; }
+
+  /* ===== TEMPLATE cards ===== */
+  .tpl { background: var(--card); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; }
+  .tpl .vis { height: 230px; position: relative; overflow: hidden; }
+  .tpl .body { padding: 20px; }
+  .tpl h3 { font-size: 24px; }
+  .tpl .use { font-family: var(--mono); font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: 9px; }
+  .tpl p { font-size: 13.5px; color: var(--ink-soft); margin: 8px 0 0; }
+
+  /* mini hero mockup */
+  .mini { position: absolute; inset: 0; display: flex; flex-direction: column; }
+  .mini-photo { flex: 1; position: relative; }
+  .mh-name { position: absolute; right: 8px; top: 10px; writing-mode: vertical-rl; font-family: var(--serif); font-weight: 600; font-size: 30px; color: #fff; text-transform: uppercase; letter-spacing: .02em; }
+  .mini-stat { background: var(--card); margin: -16px 16px 0; border-radius: 12px; border: 1px solid var(--line); padding: 12px; position: relative; z-index: 2; box-shadow: 0 10px 20px -12px rgba(40,32,22,.3); }
+  .mini-line { height: 5px; border-radius: 3px; background: var(--line); margin-bottom: 7px; }
+  /* trading mini */
+  .mt-card { margin: 18px; flex: 1; border-radius: 14px; padding: 5px; }
+  .mt-in { background: var(--card); border-radius: 10px; height: 100%; padding: 10px; display: flex; flex-direction: column; gap: 7px; }
+  .mt-win { flex: 1; border-radius: 6px; }
+  /* flat mini */
+  .mf { flex: 1; display: flex; flex-direction: column; align-items: center; padding-top: 26px; }
+  .mf-disc { width: 86px; height: 86px; border-radius: 50%; border: 3px solid #fff; }
+  .mf-name { font-family: var(--serif); font-style: italic; font-weight: 600; color: #fff; font-size: 26px; margin-top: 12px; }
+  .mf-panel { background: var(--card); width: 100%; margin-top: 18px; border-radius: 16px 16px 0 0; height: 54px; }
+
+  /* anatomy list */
+  .anat { counter-reset: a; margin-top: 40px; }
+  .anat .row { display: grid; grid-template-columns: 56px 1fr; gap: 20px; padding: 20px 0; border-top: 1px solid var(--line); }
+  .anat .row .n { font-family: var(--serif); font-size: 30px; color: var(--gold); line-height: 1; }
+  .anat .row h3 { font-size: 21px; }
+  .anat .row p { font-size: 14px; color: var(--ink-soft); margin: 7px 0 0; }
+
+  /* icons */
+  .icoset { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
+  .ico { width: 92px; text-align: center; }
+  .ico .box { width: 92px; height: 72px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; color: var(--catd); }
+  .ico .cap { font-family: var(--mono); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); margin-top: 8px; }
+
+  /* voice */
+  .voice { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; margin-top: 40px; }
+  .voice .col { padding: 0 0 0 18px; border-left: 2px solid; }
+  .voice .do { border-color: var(--farm); }
+  .voice .dont { border-color: var(--glass); }
+  .voice h3 { font-size: 17px; font-family: var(--mono); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  .voice ul { margin: 14px 0 0; padding: 0; }
+  .voice li { list-style: none; font-family: var(--serif); font-size: 19px; color: var(--ink); margin: 0 0 12px; line-height: 1.35; }
+  .voice .dont li { color: var(--ink-faint); text-decoration: line-through; text-decoration-color: var(--glass); }
+  @media (max-width:720px){ .voice{ grid-template-columns: 1fr; gap: 32px; } }
+
+  footer { padding: 70px 0 90px; border-top: 1px solid var(--line); text-align: center; }
+  footer .wordmark-sm { font-family: var(--serif); font-style: italic; font-size: 30px; }
+  footer .meta { font-family: var(--mono); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-faint); margin-top: 12px; }
+
+  @media print {
+    section, footer { break-inside: avoid; }
+    .cover { min-height: auto; padding: 80px 0; }
+  }
+</style>
+</head>
+<body>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="100" fill="#F4EFE5"/>
+    <text x="50" y="46" font-family="Georgia, serif" font-size="20" font-style="italic" fill="#211C16" text-anchor="middle">multi</text>
+    <text x="50" y="68" font-family="Georgia, serif" font-size="20" font-style="italic" fill="#B0905A" text-anchor="middle">self</text>
+  </svg>
+</template>
+
+<!-- ============ COVER ============ -->
+<header class="cover">
+  <div class="wrap">
+    <div class="num">Brand Guideline · v1.0 · 2026</div>
+    <div class="wordmark">multi<em>self</em></div>
+    <p class="lede">Embrace the diversity of a person — every self, seen.</p>
+    <div class="foot">
+      <div>Concept<b>One person, many selves</b></div>
+      <div>System<b>Quiet luxury</b></div>
+      <div>Format<b>Card · Hero · Trading · Flat</b></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 01 CONCEPT ============ -->
+<section id="concept">
+  <div class="wrap">
+    <div class="sec-intro">
+      <div class="num">01 — The Idea</div>
+      <h2>A person is not one thing.</h2>
+      <p class="big">Multiself gives every facet of a person its own card — the cat sitter, the farmer, the artist — so each role is met on its own terms, yet clearly belongs to the same hand.</p>
+      <p>The product is a set of collectible character cards for real people. Where a game introduces a hero with a name, a portrait and a set of abilities, Multiself introduces a <em>self</em>: a role someone genuinely lives, with its own work, story, offerings and ways to connect. The cards link in a single timeline, so moving between selves feels like turning the pages of one collection.</p>
+    </div>
+
+    <div class="grid g3">
+      <div class="pillar">
+        <h3>Many, not one</h3>
+        <p>We never flatten a person into a single title. Each self is whole, distinct, and worthy of a full page.</p>
+      </div>
+      <div class="pillar">
+        <h3>Seen, not sold</h3>
+        <p>Quiet confidence over hype. We present a person with the restraint of a fine portrait, not a billboard.</p>
+      </div>
+      <div class="pillar">
+        <h3>One hand, one thread</h3>
+        <p>Distinct colours and treatments per self, unified by type, paper and a single timeline that ties them together.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 LOGO ============ -->
+<section id="logo">
+  <div class="wrap">
+    <div class="sec-intro">
+      <div class="num">02 — Wordmark</div>
+      <h2>multiself</h2>
+      <p>Set in Cormorant Garamond Medium, lowercase, tight. The second syllable — <em>self</em> — carries the gold, marking the individual inside the collective. Never add a tagline lockup smaller than the wordmark; let it breathe with at least its own cap-height of clear space on every side.</p>
+    </div>
+    <div class="grid g2">
+      <div class="swatch"><div class="chip" style="background:var(--paper); display:flex; align-items:center; justify-content:center;"><span style="font-family:var(--serif); font-weight:500; font-size:54px;">multi<em style="font-style:italic; color:var(--gold);">self</em></span></div><div class="meta"><div class="role">Primary · on paper</div><div class="nm">Ivory ground</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--ink); display:flex; align-items:center; justify-content:center;"><span style="font-family:var(--serif); font-weight:500; font-size:54px; color:var(--paper);">multi<em style="font-style:italic; color:var(--gold);">self</em></span></div><div class="meta"><div class="role">Reversed · on ink</div><div class="nm">Charcoal ground</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 COLOR ============ -->
+<section id="color">
+  <div class="wrap">
+    <div class="sec-intro">
+      <div class="num">03 — Colour</div>
+      <h2>Muted jewel tones on warm ivory.</h2>
+      <p>A warm-neutral foundation — ivory paper, warm near-black ink, champagne gold — holds the system together. Each self is then assigned one <em>muted jewel tone</em>: same lightness and chroma, only the hue shifts. This keeps every role equal in weight while unmistakably its own. New selves extend the set by choosing a new hue at the same <span style="font-family:var(--mono); font-size:13px;">oklch(0.55 0.08 H)</span> recipe.</p>
+    </div>
+
+    <div class="grid g3">
+      <div class="swatch"><div class="chip" style="background:var(--cat);"></div><div class="meta"><div class="role">Self · Cat Sitter</div><div class="nm">Amber Clay</div><div class="val">oklch(0.56 0.085 45)<br/><span>approx</span> #97694A</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--farm);"></div><div class="meta"><div class="role">Self · Farmer</div><div class="nm">Field Olive</div><div class="val">oklch(0.55 0.075 140)<br/><span>approx</span> #5E6E4E</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--glass);"></div><div class="meta"><div class="role">Self · Glass Artist</div><div class="nm">Dusk Plum</div><div class="val">oklch(0.52 0.09 330)<br/><span>approx</span> #7A4E6E</div></div></div>
+    </div>
+
+    <div class="neutrals">
+      <div class="neutral" style="background:var(--paper);"><div class="nm">Ivory Paper</div><div class="hx">#F4EFE5</div></div>
+      <div class="neutral" style="background:var(--paper-2);"><div class="nm">Deep Ivory</div><div class="hx">#EBE3D4</div></div>
+      <div class="neutral" style="background:var(--card);"><div class="nm">Card</div><div class="hx">#FBF8F1</div></div>
+      <div class="neutral" style="background:var(--gold);"><div class="nm" style="color:#fff;">Champagne Gold</div><div class="hx" style="color:#fff;">#B0905A</div></div>
+      <div class="neutral" style="background:var(--ink);"><div class="nm" style="color:var(--paper);">Warm Ink</div><div class="hx" style="color:var(--paper);">#211C16</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 TYPE ============ -->
+<section id="type">
+  <div class="wrap">
+    <div class="sec-intro">
+      <div class="num">04 — Typography</div>
+      <h2>Serif voice, quiet supports.</h2>
+      <p>Three families do all the work. A high-contrast serif speaks; a humanist sans steadies; a mono labels. Nothing else.</p>
+    </div>
+
+    <div style="margin-top:48px;">
+      <div class="type-row">
+        <div class="type-label"><b>Cormorant Garamond</b>Display · 400–600<br/>names, titles, quotes</div>
+        <div class="specimen-serif" style="font-size:46px; line-height:1;">Every self, seen.<br/><span style="font-style:italic; font-weight:500; color:var(--ink-soft);">One person, many selves.</span></div>
+      </div>
+      <div class="type-row">
+        <div class="type-label"><b>Jost</b>Sans · 300–500<br/>body, descriptions, buttons</div>
+        <div class="specimen-sans" style="font-size:18px; line-height:1.6; max-width:460px; font-weight:300;">A devoted cat sitter with a love for all things feline — giving your pets the care and attention they need while you are away.</div>
+      </div>
+      <div class="type-row">
+        <div class="type-label"><b>Space Mono</b>Mono · 400–700<br/>kickers, stats, metadata</div>
+        <div class="specimen-mono" style="font-size:14px; letter-spacing:.14em; text-transform:uppercase; line-height:2;">00 · About — Est. 2021 — Care Type</div>
+      </div>
+    </div>
+
+    <ul class="scale" style="margin-top:40px; padding:0;">
+      <li><span class="s">Display / 60</span><span class="specimen-serif" style="font-size:42px;">Cat Sitter</span></li>
+      <li><span class="s">Title / 26</span><span class="specimen-serif" style="font-size:26px; font-weight:600;">The story</span></li>
+      <li><span class="s">Lead / 21</span><span class="specimen-serif" style="font-size:21px; font-style:italic;">“I transform light into art.”</span></li>
+      <li><span class="s">Body / 14.5</span><span class="specimen-sans" style="font-size:14.5px;">Picked at peak ripeness, delivered the same week.</span></li>
+      <li><span class="s">Mono / 10</span><span class="specimen-mono" style="font-size:10px; letter-spacing:.2em; text-transform:uppercase;">Available for bookings</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 05 TEMPLATES ============ -->
+<section id="templates">
+  <div class="wrap">
+    <div class="sec-intro">
+      <div class="num">05 — The Three Templates</div>
+      <h2>One concept, three expressions.</h2>
+      <p>Every self can be presented in one of three card templates. The content is identical — only the personality of the frame changes. A client chooses the template that suits their tone; the timeline, palette and type stay constant across all three.</p>
+    </div>
+
+    <div class="grid g3">
+      <!-- Hero -->
+      <div class="tpl">
+        <div class="vis" style="background:var(--cat);">
+          <div class="mini">
+            <div class="mini-photo">
+              <div class="mh-name">CAT<br/>SITTER</div>
+            </div>
+            <div class="mini-stat">
+              <div class="mini-line" style="width:60%;"></div>
+              <div class="mini-line" style="width:90%;"></div>
+              <div class="mini-line" style="width:40%; margin-bottom:0;"></div>
+            </div>
+            <div style="height:18px;"></div>
+          </div>
+        </div>
+        <div class="body">
+          <div class="use">Editorial · Bold</div>
+          <h3>Hero</h3>
+          <p>A full-bleed portrait with the role name set vertical and large. Confident and magazine-like. For people whose presence leads.</p>
+        </div>
+      </div>
+
+      <!-- Trading -->
+      <div class="tpl">
+        <div class="vis" style="background:var(--glasst);">
+          <div class="mini">
+            <div class="mt-card" style="background:linear-gradient(160deg,var(--glass),var(--glassd)); box-shadow:0 14px 30px -16px var(--glassd);">
+              <div class="mt-in">
+                <div style="display:flex; justify-content:space-between; align-items:baseline;"><span style="font-family:var(--serif); font-weight:600; font-size:15px;">Glass</span><span style="font-family:var(--mono); font-size:9px; color:var(--gold);">EST 22</span></div>
+                <div class="mt-win" style="background:var(--glasst);"></div>
+                <div class="mini-line" style="width:80%; height:4px;"></div>
+                <div class="mini-line" style="width:55%; height:4px; margin-bottom:0;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="body">
+          <div class="use">Collectible · Refined</div>
+          <h3>Trading</h3>
+          <p>A framed collectible card with a gold rule, an <em>Est.</em> badge and traits as a stat-sheet. For the most literal take on the card metaphor.</p>
+        </div>
+      </div>
+
+      <!-- Flat -->
+      <div class="tpl">
+        <div class="vis" style="background:var(--farm);">
+          <div class="mini">
+            <div class="mf">
+              <div class="mf-disc" style="background:rgba(255,255,255,.18);"></div>
+              <div class="mf-name">Farmer</div>
+              <div class="mf-panel"></div>
+            </div>
+          </div>
+        </div>
+        <div class="body">
+          <div class="use">Friendly · Flat</div>
+          <h3>Flat</h3>
+          <p>A circular portrait medallion, soft colour blobs and a clean panel of moves. Warm and approachable, sans-led. For an inviting tone.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 ANATOMY ============ -->
+<section id="anatomy">
+  <div class="wrap">
+    <div class="sec-intro">
+      <div class="num">06 — Card Anatomy</div>
+      <h2>What every self contains.</h2>
+      <p>Regardless of template, a self is one scrolling page built from the same ordered parts. Keep the order; the rhythm is part of the brand.</p>
+    </div>
+    <div class="anat">
+      <div class="row"><div class="n">01</div><div><h3>The Header</h3><p>Portrait, person name, role and a one-line tagline. The self's colour saturates this zone.</p></div></div>
+      <div class="row"><div class="n">02</div><div><h3>The Attributes</h3><p>Established year, location and type, plus three signature traits rated in dots. This replaces any “difficulty” or game score — it introduces a person, not a level.</p></div></div>
+      <div class="row"><div class="n">03</div><div><h3>The Story</h3><p>A lead line in italic serif, then a short paragraph. First person, warm, never a résumé.</p></div></div>
+      <div class="row"><div class="n">04</div><div><h3>Past Work</h3><p>A gallery — one feature image and a supporting pair — with a quiet mono caption.</p></div></div>
+      <div class="row"><div class="n">05</div><div><h3>Video</h3><p>One feature clip plus two shorts. Show the self in motion.</p></div></div>
+      <div class="row"><div class="n">06</div><div><h3>Shop &amp; Offerings</h3><p>Products or services with price and a single buy / book / enquire action each.</p></div></div>
+      <div class="row"><div class="n">07</div><div><h3>Connect</h3><p>Links shown as icon tiles — the glyph names the platform; no text label needed.</p></div></div>
+      <div class="row"><div class="n">08</div><div><h3>Invitation</h3><p>A closing line — “Every self deserves its own card” — and a single call to create your own multiself.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 TIMELINE + ICONS ============ -->
+<section id="connective">
+  <div class="wrap">
+    <div class="sec-intro">
+      <div class="num">07 — Connective Tissue</div>
+      <h2>The thread between selves.</h2>
+      <p>A slim timeline rests at the foot of every card. It names the current self, marks each self as a node in its own colour, and lets you swipe between them. It is quiet by design — a translucent ivory bar, never a heavy control — because the selves are the subject, not the navigation.</p>
+    </div>
+
+    <!-- timeline demo -->
+    <div style="margin-top:40px; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:11px 14px; display:flex; align-items:center; gap:12px; max-width:520px;">
+      <div style="width:28px;height:28px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);">‹</div>
+      <div style="flex:1;">
+        <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;"><span style="font-family:var(--serif); font-style:italic; font-size:15px;">Farmer</span><span style="font-family:var(--mono); font-size:8.5px; letter-spacing:.16em; color:var(--ink-faint);">02 / 03</span></div>
+        <div style="display:flex; align-items:center;">
+          <div style="flex:1;height:1.5px;background:var(--cat);"></div>
+          <div style="width:9px;height:9px;border-radius:50%;background:var(--farm);box-shadow:0 0 0 3px color-mix(in oklch,var(--farm) 24%,transparent);"></div>
+          <div style="flex:1;height:1.5px;background:var(--line);"></div>
+          <div style="width:9px;height:9px;border-radius:50%;background:var(--line);"></div>
+          <div style="flex:1;height:1.5px;background:transparent;"></div>
+        </div>
+      </div>
+      <div style="width:28px;height:28px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);">›</div>
+    </div>
+
+    <h3 style="font-size:22px; margin-top:56px;">Iconography</h3>
+    <p style="color:var(--ink-soft); max-width:560px; margin-top:10px; font-size:14.5px;">Connect links use a single line set at 1.6px stroke, 24px grid, rounded joins. The glyph alone identifies the platform — labels are dropped.</p>
+    <div class="icoset" id="icoset"></div>
+  </div>
+</section>
+
+<!-- ============ 08 VOICE ============ -->
+<section id="voice">
+  <div class="wrap">
+    <div class="sec-intro">
+      <div class="num">08 — Tone of Voice</div>
+      <h2>Warm, first-person, unhurried.</h2>
+      <p>We speak as the person, about the person — plainly and with quiet pride. We introduce; we do not pitch.</p>
+    </div>
+    <div class="voice">
+      <div class="col do">
+        <h3>We say</h3>
+        <ul>
+          <li>I look after your cats like they're my own.</li>
+          <li>Picked at peak ripeness, delivered the same week.</li>
+          <li>I transform light into art.</li>
+          <li>Every self deserves its own card.</li>
+        </ul>
+      </div>
+      <div class="col dont">
+        <h3>We avoid</h3>
+        <ul>
+          <li>Unlock the ultimate pet-care experience!</li>
+          <li>Level 99 master farmer — pro stats inside.</li>
+          <li>World-class, award-winning glass solutions.</li>
+          <li>Build your profile today.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="wordmark-sm">One person, many selves.</div>
+    <div class="meta">Multiself · Brand Guideline · v1.0</div>
+  </div>
+</footer>
+
+<script>
+  // render the line-icon set (same glyphs used in the product Connect section)
+  const ICONS = {
+    Instagram: '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>',
+    Website:   '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.8 2.4 4.2 5.6 4.2 9s-1.4 6.6-4.2 9c-2.8-2.4-4.2-5.6-4.2-9S9.2 5.4 12 3z"/>',
+    Shop:      '<path d="M5 8h14l-1 12H6L5 8z"/><path d="M8.5 8V6.5a3.5 3.5 0 0 1 7 0V8"/>',
+    WhatsApp:  '<path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3.5 20l1.2-4.7A8.5 8.5 0 1 1 21 11.5z"/>',
+    Email:     '<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M4 7l8 6 8-6"/>',
+    Map:       '<path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/>',
+    Events:    '<rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17"/><path d="M8 3v4M16 3v4"/>',
+    YouTube:   '<rect x="3" y="6" width="18" height="12" rx="3.5"/><path d="M10.5 9.3l4.2 2.7-4.2 2.7V9.3z" fill="currentColor" stroke="none"/>',
+  };
+  const set = document.getElementById('icoset');
+  set.innerHTML = Object.entries(ICONS).map(([name, p]) =>
+    `<div class="ico"><div class="box"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${p}</svg></div><div class="cap">${name}</div></div>`
+  ).join('');
+</script>
+</body>
+</html>

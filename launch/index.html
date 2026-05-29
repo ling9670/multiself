@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Multiself — Evelyn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="multiself.css" />
+<link rel="stylesheet" href="trading-card.css" />
+<link rel="stylesheet" href="flat-collectible.css" />
+</head>
+<body>
+<div id="root"></div>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="100" fill="#F4EFE5"/>
+    <rect x="26" y="16" width="48" height="68" rx="9" fill="#8A5A43"/>
+    <text x="50" y="56" font-family="Georgia, serif" font-size="13" fill="#F4EFE5" text-anchor="middle" font-style="italic">self</text>
+    <circle cx="38" cy="76" r="3" fill="#B0905A"/><circle cx="50" cy="76" r="3" fill="#5C6A43"/><circle cx="62" cy="76" r="3" fill="#7A4A66"/>
+  </svg>
+</template>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="roles-data.jsx"></script>
+<script type="text/babel" src="ms-icons.jsx"></script>
+<script type="text/babel" src="role-page.jsx"></script>
+<script type="text/babel" src="trading-card-hero.jsx"></script>
+<script type="text/babel" src="flat-collectible-hero.jsx"></script>
+<script type="text/babel" src="timeline-nav.jsx"></script>
+
+<script type="text/babel">
+const { useState, useRef, useEffect } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "style": "Trading",
+  "display": "Cormorant Garamond",
+  "mood": "Ivory"
+}/*EDITMODE-END*/;
+
+const DISPLAY = {
+  "Cormorant Garamond": "'Cormorant Garamond', Georgia, serif",
+  "Playfair Display": "'Playfair Display', Georgia, serif",
+  "Jost": "'Jost', sans-serif",
+};
+
+// background "mood" palettes — luxury bases
+const MOOD = {
+  "Ivory":    { paper: "#F4EFE5", paper2: "#EBE3D4", card: "#FBF8F1", ink: "#211C16", line: "#E3D9C7", bg: "#E8E0D2" },
+  "Charcoal": { paper: "#1C1A17", paper2: "#26231E", card: "#262320", ink: "#F3ECDD", line: "#3A352D", bg: "#141210" },
+  "Oat":      { paper: "#ECE7DC", paper2: "#E0D8C8", card: "#F6F1E7", ink: "#2A2218", line: "#DBD0BC", bg: "#DAD0BE" },
+};
+
+function applyVars(role, mood) {
+  const root = document.documentElement.style;
+  root.setProperty("--role", role.color);
+  root.setProperty("--role-deep", role.colorDeep);
+  root.setProperty("--role-tint", role.colorTint);
+  const m = MOOD[mood] || MOOD.Ivory;
+  root.setProperty("--paper", m.paper);
+  root.setProperty("--paper-2", m.paper2);
+  root.setProperty("--card", m.card);
+  root.setProperty("--ink", m.ink);
+  root.setProperty("--line", m.line);
+  root.setProperty("--ink-soft", mood === "Charcoal" ? "#B8AE9C" : "#6E6557");
+  root.setProperty("--ink-faint", mood === "Charcoal" ? "#7E7563" : "#9A9080");
+  document.body.style.setProperty("--bgbase", m.bg);
+}
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [cur, setCur] = useState(0);
+  const [dir, setDir] = useState(null);
+  const screenRef = useRef(null);
+  const roles = window.ROLES;
+
+  const go = (i) => {
+    const n = (i + roles.length) % roles.length;
+    if (n === cur) return;
+    setDir(n > cur || (cur === roles.length - 1 && n === 0) ? "next" : "prev");
+    setCur(n);
+  };
+
+  useEffect(() => {
+    applyVars(roles[cur], t.mood);
+    if (screenRef.current) screenRef.current.scrollTop = 0;
+  }, [cur, t.mood]);
+
+  useEffect(() => {
+    document.documentElement.style.setProperty("--serif", DISPLAY[t.display] || DISPLAY["Cormorant Garamond"]);
+  }, [t.display]);
+
+  // swipe
+  const touch = useRef({ x: 0, y: 0, t: 0 });
+  const onStart = (e) => { const p = e.touches ? e.touches[0] : e; touch.current = { x: p.clientX, y: p.clientY, t: Date.now() }; };
+  const onEnd = (e) => {
+    const p = e.changedTouches ? e.changedTouches[0] : e;
+    const dx = p.clientX - touch.current.x, dy = p.clientY - touch.current.y;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.4) { go(dx < 0 ? cur + 1 : cur - 1); }
+  };
+
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === "ArrowRight") go(cur + 1); if (e.key === "ArrowLeft") go(cur - 1); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [cur]);
+
+  const r = roles[cur];
+  const dirCls = dir ? " swipe-" + dir : "";
+
+  function Card() {
+    if (t.style === "Trading") return <React.Fragment><TCHero r={r} index={cur} total={roles.length} /><PortfolioBody r={r} /></React.Fragment>;
+    if (t.style === "Flat")    return <React.Fragment><FCHero r={r} index={cur} total={roles.length} /><PortfolioBody r={r} /></React.Fragment>;
+    return <React.Fragment><Hero r={r} index={cur} total={roles.length} /><Stats r={r} /><PortfolioBody r={r} /></React.Fragment>;
+  }
+
+  return (
+    <div className="device"
+         onTouchStart={onStart} onTouchEnd={onEnd}
+         onMouseDown={onStart} onMouseUp={onEnd}>
+      <div className="screen" ref={screenRef}>
+        <div className={"page tpl-" + t.style.toLowerCase() + dirCls} key={r.id + t.style}><Card /></div>
+      </div>
+      <TimelineNav roles={roles} current={cur} onGo={go} />
+
+      <TweaksPanel>
+        <TweakSection label="Template" />
+        <TweakRadio label="Card style" value={t.style} options={["Hero", "Trading", "Flat"]} onChange={(v)=>setTweak('style', v)} />
+        <TweakSection label="Atmosphere" />
+        <TweakRadio label="Mood" value={t.mood} options={["Ivory", "Charcoal", "Oat"]} onChange={(v)=>setTweak('mood', v)} />
+        <TweakSection label="Typography" />
+        <TweakSelect label="Display font" value={t.display}
+          options={["Cormorant Garamond", "Playfair Display", "Jost"]}
+          onChange={(v)=>setTweak('display', v)} />
+      </TweaksPanel>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+<!-- Playfair available for the tweak -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet" />
+</body>
+</html>

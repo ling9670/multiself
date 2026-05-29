@@ -1,0 +1,90 @@
+/* trading-card.css — luxury collectible "card" hero, reuses multiself.css vars */
+
+.tc-wrap { padding: 16px 16px 0; }
+
+.tc {
+  position: relative;
+  border-radius: 22px;
+  padding: 7px;
+  background:
+    linear-gradient(160deg,
+      color-mix(in oklch, var(--role) 70%, white 12%) 0%,
+      var(--role) 42%,
+      var(--role-deep) 100%);
+  box-shadow:
+    0 26px 50px -22px color-mix(in oklch, var(--role-deep) 80%, black 10%),
+    inset 0 0 0 1px color-mix(in oklch, var(--gold) 55%, transparent),
+    inset 0 0 0 6px color-mix(in oklch, var(--role-deep) 50%, transparent);
+}
+/* foil sheen */
+.tc::before {
+  content: ""; position: absolute; inset: 0; border-radius: 22px; pointer-events: none;
+  background: linear-gradient(125deg, transparent 38%, rgba(255,255,255,.16) 48%, transparent 58%);
+}
+
+.tc-inner {
+  position: relative;
+  background: var(--card);
+  border-radius: 16px;
+  padding: 14px 14px 16px;
+  border: 1px solid color-mix(in oklch, var(--gold) 40%, transparent);
+}
+
+.tc-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.tc-name {
+  font-family: var(--serif); font-weight: 600; font-size: 27px; line-height: .95; color: var(--ink);
+  letter-spacing: .005em;
+}
+.tc-person { font-family: var(--mono); font-size: 9px; letter-spacing: .26em; text-transform: uppercase; color: var(--gold); margin-bottom: 5px; }
+.tc-badge {
+  flex-shrink: 0; text-align: center; line-height: 1;
+  font-family: var(--serif);
+}
+.tc-badge .est-k { font-family: var(--mono); font-size: 7.5px; letter-spacing: .18em; color: var(--ink-faint); text-transform: uppercase; display: block; margin-bottom: 3px; }
+.tc-badge .est-v {
+  font-size: 20px; color: var(--ink); font-weight: 600;
+  border: 1px solid color-mix(in oklch, var(--gold) 50%, transparent); border-radius: 10px; padding: 5px 9px; display: inline-block;
+}
+
+/* art window */
+.tc-art {
+  position: relative; margin: 12px 0; aspect-ratio: 4/3; border-radius: 12px; overflow: hidden;
+  border: 5px solid color-mix(in oklch, var(--role) 30%, var(--card));
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--gold) 40%, transparent);
+}
+.tc-art .ph { position: absolute; inset: 0; border: none; border-radius: 0; }
+.tc-emblem {
+  position: absolute; top: 8px; right: 8px; width: 34px; height: 34px; border-radius: 50%;
+  background: color-mix(in srgb, var(--card) 85%, transparent); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  border: 1px solid color-mix(in oklch, var(--gold) 50%, transparent);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 8px; font-weight: 700; letter-spacing: .04em; color: var(--role-deep); text-transform: uppercase;
+}
+
+/* type ribbon */
+.tc-ribbon {
+  display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
+  font-family: var(--mono); font-size: 8.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft);
+  padding: 7px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 12px;
+}
+.tc-ribbon .sep { color: var(--gold); }
+
+/* abilities (traits as attack rows) — stat-sheet treatment, distinct from Hero */
+.tc-abil { display: flex; flex-direction: column; gap: 0; }
+.tc-row { display: flex; align-items: center; gap: 11px; padding: 9px 0; border-bottom: 1px solid color-mix(in oklch, var(--gold) 20%, transparent); }
+.tc-row:first-child { padding-top: 2px; }
+.tc-row:last-child { border-bottom: none; padding-bottom: 2px; }
+.tc-cost { display: flex; gap: 3px; flex-shrink: 0; width: 44px; }
+.tc-pip { width: 9px; height: 9px; border-radius: 50%; background: var(--line); }
+.tc-pip.on { background: var(--role); box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--role-deep) 60%, transparent); }
+.tc-abil-name { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); flex: 1; }
+.tc-abil-val { font-family: var(--serif); font-size: 15px; color: var(--gold); letter-spacing: .04em; }
+
+.tc-footer {
+  display: flex; align-items: center; justify-content: space-between; margin-top: 14px;
+  padding-top: 11px; border-top: 1px solid var(--line);
+  font-family: var(--mono); font-size: 8px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint);
+}
+.tc-no { border: 1px solid var(--line); border-radius: 999px; padding: 3px 9px; }
+.tc-status-mini { display: inline-flex; align-items: center; gap: 6px; color: var(--role-deep); }
+.tc-status-mini .pulse { width: 6px; height: 6px; border-radius: 50%; background: #3f9b6b; }

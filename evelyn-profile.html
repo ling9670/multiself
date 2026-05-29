@@ -3,692 +3,1237 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#FFFFFF">
+  <meta name="theme-color" content="#F4EFE5">
   <meta property="og:title" content="Evelyn · multiself">
   <meta property="og:description" content="Stained Glass · Cat Care · Massage · Face 指壓 · Builder — same person, every version">
   <meta property="og:url" content="https://ling9670.github.io/multiself/evelyn-profile.html">
   <meta property="og:type" content="profile">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Evelyn · multiself">
-  <meta name="twitter:description" content="Stained Glass · Cat Care · Massage · Face 指壓 — see a person in whole">
+  <meta name="twitter:description" content="Same person. Every version. — multiself">
   <title>Evelyn · multiself</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --white:    #FFFFFF;
-      --off:      #FAFAF8;
-      --light:    #F0EDE9;
-      --mid-gray: #8A8480;
-      --text:     #1E1B18;
-      --text-mid: #6A6460;
-      --ms-brand: #D4956A;
-      --ease:     cubic-bezier(0.4, 0, 0.2, 1);
+      --paper:     #F4EFE5;
+      --paper-2:   #EBE3D4;
+      --card:      #FBF8F1;
+      --ink:       #211C16;
+      --ink-soft:  #6E6557;
+      --ink-faint: #9A9080;
+      --line:      #E3D9C7;
+      --gold:      #B0905A;
+      --serif:     'Cormorant Garamond', Georgia, serif;
+      --mono:      'Space Mono', monospace;
+      --role:      #C8785A;
+      --role-deep: #A05A3E;
+      --role-tint: #FBF0EB;
+      --ease:      cubic-bezier(0.2, 0.7, 0.2, 1);
     }
 
     html, body {
       height: 100%;
-      overflow: hidden;
-      background: #E8E4DF;
-      font-family: 'Inter', sans-serif;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      moz-osx-font-smoothing: grayscale;
     }
 
-    /* ── PAGE SHELL ── */
-    .page {
-      background: var(--white);
-      height: 100dvh;
-      max-width: 430px;
-      margin: 0 auto;
+    body {
+      font-family: var(--mono);
+      color: var(--ink);
+      background: radial-gradient(110% 70% at 50% 0%, var(--role-tint), transparent 60%), #E0D9CE;
+      transition: background .55s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* ──── DEVICE SHELL ──── */
+    .device {
+      position: relative;
+      width: min(460px, 100vw);
+      height: min(920px, 100vh);
+      background: var(--paper);
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
-      position: relative;
+      box-shadow:
+        0 40px 90px -30px rgba(40,32,22,.42),
+        0 0 0 1px rgba(40,32,22,.05);
+    }
+    @media (min-width: 480px) {
+      .device { border-radius: 34px; height: min(900px, 96vh); }
     }
 
-    @media (min-width: 600px) {
-      body { display: flex; align-items: center; justify-content: center; }
-      .page {
-        height: min(92dvh, 920px);
-        border-radius: 48px;
-        box-shadow: 0 32px 110px rgba(0,0,0,0.20), 0 0 0 1px rgba(0,0,0,0.07);
-      }
-    }
-
-    /* ── TOP BAR ── */
+    /* ──── TOP BAR (overlay) ──── */
     .top-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 30;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 18px 20px 10px;
-      flex-shrink: 0;
-      background: var(--white);
-      position: relative;
-      z-index: 10;
+      padding: 20px 20px 0;
+      pointer-events: none;
     }
+    .top-bar > * { pointer-events: all; }
 
     .person-name {
-      font-size: 17px;
+      font-family: var(--serif);
       font-weight: 600;
-      color: var(--text);
-      letter-spacing: 0.01em;
+      font-size: 17px;
+      color: rgba(255,255,255,.96);
+      letter-spacing: .04em;
+      text-shadow: 0 1px 10px rgba(0,0,0,.22);
     }
-
     .person-loc {
       margin-top: 3px;
-      font-family: 'Space Mono', monospace;
+      font-family: var(--mono);
       font-size: 8px;
-      letter-spacing: 0.11em;
+      letter-spacing: .20em;
       text-transform: uppercase;
-      color: var(--mid-gray);
+      color: rgba(255,255,255,.62);
     }
-
     .ms-badge {
-      font-family: 'Space Mono', monospace;
-      font-size: 8.5px;
-      letter-spacing: 0.10em;
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .14em;
       text-transform: uppercase;
-      color: var(--ms-brand);
-      border: 1.5px solid var(--ms-brand);
-      padding: 5px 13px;
+      color: rgba(255,255,255,.82);
+      border: 1px solid rgba(255,255,255,.28);
+      padding: 6px 14px;
       border-radius: 100px;
       text-decoration: none;
-      transition: opacity 0.18s;
+      background: rgba(255,255,255,.09);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      transition: opacity .18s;
     }
-    .ms-badge:hover { opacity: 0.65; }
+    .ms-badge:hover { opacity: .65; }
 
-    /* ── HERO TRACK ── */
-    .hero-track {
-      display: flex;
-      overflow-x: scroll;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
+    /* ──── SCROLLABLE SCREEN ──── */
+    .screen {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
       scrollbar-width: none;
-      flex-shrink: 0;
-      height: 55vh;
-      min-height: 240px;
-      max-height: 380px;
-    }
-    .hero-track::-webkit-scrollbar { display: none; }
-
-    .hero-card {
-      min-width: 100%;
-      height: 100%;
-      scroll-snap-align: start;
-      flex-shrink: 0;
       position: relative;
+    }
+    .screen::-webkit-scrollbar { display: none; }
+
+    /* ──── IDENTITY PAGES ──── */
+    .id-page {
+      display: none;
+      min-height: 100%;
+      padding-bottom: 124px;
+    }
+    .id-page.active {
+      display: block;
+      animation: pageIn .44s var(--ease);
+    }
+    .id-page.enter-next { animation: enterFromRight .44s var(--ease); }
+    .id-page.enter-prev { animation: enterFromLeft  .44s var(--ease); }
+
+    @keyframes pageIn         { from { opacity:0; }                         to { opacity:1; } }
+    @keyframes enterFromRight { from { opacity:0; transform:translateX(28px); } to { opacity:1; transform:none; } }
+    @keyframes enterFromLeft  { from { opacity:0; transform:translateX(-28px); } to { opacity:1; transform:none; } }
+
+    /* ──── HERO ──── */
+    .hero {
+      position: relative;
+      background: linear-gradient(180deg, var(--role) 0%, var(--role-deep) 100%);
+      color: #fff;
       overflow: hidden;
-      border-radius: 0 0 38px 38px;
     }
 
-    /* Watermark repeating text */
-    .wm {
+    .hero-wm {
       position: absolute;
       inset: 0;
-      padding: 10px 8px;
-      font-family: 'Fredoka', sans-serif;
-      font-size: 44px;
-      font-weight: 700;
-      color: rgba(255,255,255,0.14);
-      letter-spacing: 0.06em;
-      line-height: 1.15;
+      font-family: var(--serif);
+      font-size: 52px;
+      font-weight: 600;
+      color: rgba(255,255,255,.09);
+      letter-spacing: .04em;
+      line-height: 1.08;
+      padding: 8px;
       word-break: break-all;
       overflow: hidden;
       pointer-events: none;
       user-select: none;
     }
 
-    /* Card title — sits at the top */
-    .card-title {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      padding: 15px 14px 0;
-      text-align: center;
-      font-family: 'Fredoka', sans-serif;
-      font-size: clamp(18px, 6vw, 26px);
-      font-weight: 700;
-      color: rgba(255,255,255,0.94);
-      letter-spacing: 0.06em;
+    .hero-top {
+      position: relative;
       z-index: 3;
-      text-shadow: 0 2px 14px rgba(0,0,0,0.14);
-      pointer-events: none;
-    }
-
-    /* Person photo area */
-    .card-photo {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 58%;
-      height: 84%;
-      z-index: 2;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-    }
-
-    .card-photo-inner {
-      width: 100%;
-      height: 100%;
-      border-radius: 18px 18px 0 0;
-      background: rgba(0,0,0,0.13);
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 78px;
-      line-height: 1;
-      /* replace background+font-size with actual <img> for real profile */
+      justify-content: space-between;
+      padding: 68px 20px 0;
+    }
+    .hero-counter {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.60);
+    }
+    .hero-type-chip {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.72);
+      border: 1px solid rgba(255,255,255,.22);
+      padding: 4px 11px;
+      border-radius: 100px;
     }
 
-    /* ── DOT INDICATORS ── */
-    .dots-strip {
+    .hero-portrait {
+      position: relative;
+      height: 214px;
+      margin-top: 10px;
+    }
+    .hero-portrait-ph {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(255,255,255,.11) 0 9px,
+        transparent 9px 18px
+      );
+    }
+    .hero-name {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      writing-mode: vertical-rl;
+      font-family: var(--serif);
+      font-weight: 600;
+      font-size: 54px;
+      line-height: .85;
+      letter-spacing: .01em;
+      color: rgba(255,255,255,.90);
+      text-transform: uppercase;
+      z-index: 2;
+      pointer-events: none;
+      text-shadow: 0 2px 22px rgba(0,0,0,.20);
+    }
+
+    .hero-foot {
+      position: relative;
+      z-index: 3;
+      padding: 0 20px 36px;
+    }
+    .hero-person {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .30em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.62);
+      margin-bottom: 5px;
+    }
+    .hero-role {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 30px;
+      line-height: 1;
+      color: #fff;
+    }
+    .hero-tagline {
+      font-size: 12px;
+      color: rgba(255,255,255,.68);
+      margin-top: 8px;
+      letter-spacing: .02em;
+      line-height: 1.45;
+    }
+
+    /* ──── STATS CARD ──── */
+    .stats {
+      margin: -22px 18px 0;
+      position: relative;
+      z-index: 4;
+      background: var(--card);
+      border-radius: 18px;
+      box-shadow: 0 18px 42px -20px rgba(40,32,22,.34);
+      border: 1px solid var(--line);
+      padding: 16px 18px;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .stat-row { display: flex; gap: 10px; }
+    .stat { flex: 1; min-width: 0; }
+    .stat .k {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .20em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+    .stat .v {
+      font-family: var(--serif);
+      font-size: 20px;
+      color: var(--ink);
+      line-height: 1.1;
+      margin-top: 2px;
+    }
+    .stat .v.sm {
+      font-size: 13px;
+      font-family: var(--mono);
+      font-weight: 400;
+    }
+    .divider-v { width: 1px; background: var(--line); align-self: stretch; }
+
+    .traits { display: flex; flex-direction: column; gap: 9px; }
+    .trait  { display: flex; align-items: center; gap: 10px; }
+    .trait .tl {
+      font-family: var(--mono);
+      font-size: 8.5px;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      width: 88px;
+      flex-shrink: 0;
+    }
+    .tdots { display: flex; gap: 5px; }
+    .tdot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--line);
+    }
+    .tdot.on { background: var(--role); }
+
+    .status-tag {
+      align-self: flex-start;
+      display: inline-flex;
       align-items: center;
       gap: 7px;
-      padding: 11px 0 9px;
-      flex-shrink: 0;
-      background: var(--white);
-    }
-
-    .dot {
-      height: 7px;
-      width: 7px;
-      border-radius: 100px;
-      background: #D4D0CC;
-      transition: width 0.26s var(--ease), background 0.26s var(--ease);
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-
-    .dot.active { width: 24px; }
-
-    /* ── CONTENT PANE ── */
-    .content-pane {
-      flex: 1;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      background: var(--white);
-    }
-    .content-pane::-webkit-scrollbar { display: none; }
-
-    /* Identity panels */
-    .id-panel {
-      display: none;
-      padding: 18px 20px 96px;
-    }
-
-    .id-panel.active {
-      display: block;
-      animation: panelIn 0.22s var(--ease);
-    }
-
-    @keyframes panelIn {
-      from { opacity: 0; transform: translateY(5px); }
-      to   { opacity: 1; transform: none; }
-    }
-
-    /* Identity title + bio */
-    .id-title {
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
+      font-family: var(--mono);
+      font-size: 8.5px;
+      letter-spacing: .14em;
       text-transform: uppercase;
-      color: var(--text);
-      line-height: 1.3;
-      margin-bottom: 9px;
+      color: var(--role-deep);
+      background: var(--role-tint);
+      border: 1px solid rgba(0,0,0,.05);
+      padding: 5px 12px;
+      border-radius: 999px;
     }
-
-    .id-bio {
-      font-size: 13.5px;
-      line-height: 1.82;
-      color: var(--text-mid);
-      margin-bottom: 22px;
-    }
-
-    /* Section label */
-    .sec {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text);
-      margin-bottom: 13px;
-    }
-
-    /* 3-circle work grid */
-    .circles {
-      display: flex;
-      gap: 11px;
-      margin-bottom: 22px;
-    }
-
-    .circle {
-      flex: 1;
-      aspect-ratio: 1;
+    .pulse {
+      width: 7px; height: 7px;
       border-radius: 50%;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 30px;
+      background: #3f9b6b;
+      box-shadow: 0 0 0 0 rgba(63,155,107,.5);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0   rgba(63,155,107,.5); }
+      70%  { box-shadow: 0 0 0 6px rgba(63,155,107,.0); }
+      100% { box-shadow: 0 0 0 0   rgba(63,155,107,.0); }
     }
 
-    /* Video thumbnails */
-    .videos {
+    /* ──── BODY SECTIONS ──── */
+    .body { padding: 26px 20px 0; }
+    .section { margin-bottom: 34px; }
+
+    .sec-head { margin-bottom: 15px; }
+    .sec-kicker {
+      display: block;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    .sec-title {
+      font-family: var(--serif);
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1;
       display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+    .sec-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--line), transparent);
+    }
+
+    .about-text {
+      font-size: 13.5px;
+      line-height: 1.78;
+      color: var(--ink-soft);
+    }
+    .about-lead {
+      display: block;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 20px;
+      color: var(--ink);
+      line-height: 1.42;
+      margin-bottom: 12px;
+      border-left: 2px solid var(--gold);
+      padding-left: 14px;
+    }
+
+    /* Placeholder image */
+    .ph {
+      background-color: var(--paper-2);
+      background-image: repeating-linear-gradient(
+        45deg,
+        rgba(0,0,0,.04) 0 7px,
+        transparent 7px 14px
+      );
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: flex-end;
+      padding: 8px;
+      color: var(--ink-faint);
+      font-family: var(--mono);
+      font-size: 7.5px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      overflow: hidden;
+    }
+    .ph span { background: rgba(255,255,255,.72); padding: 2px 6px; border-radius: 4px; }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 9px;
-      margin-bottom: 22px;
     }
-
-    .vid-thumb {
-      flex: 1;
-      aspect-ratio: 4/3;
-      border-radius: 11px;
-      overflow: hidden;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-    }
-
-    .vid-tag {
-      position: absolute;
-      bottom: 5px;
-      left: 5px;
-      background: rgba(0,0,0,0.48);
-      color: #fff;
-      font-family: 'Space Mono', monospace;
-      font-size: 7px;
-      padding: 2px 5px;
-      border-radius: 3px;
-      letter-spacing: 0.04em;
-    }
-
-    /* Info tiles (3-up) */
-    .tiles {
-      display: flex;
-      gap: 11px;
-      margin-bottom: 22px;
-    }
-
-    .tile {
-      flex: 1;
+    .work-grid .ph:first-child {
+      grid-column: 1 / -1;
+      aspect-ratio: 16/10;
       border-radius: 14px;
-      background: var(--light);
+    }
+    .work-grid .ph {
+      aspect-ratio: 1;
+      border-radius: 12px;
+    }
+    .work-caption {
+      margin-top: 8px;
+      font-family: var(--mono);
+      font-size: 8px;
+      color: var(--ink-faint);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    /* Reviews */
+    .review { padding: 13px 0; border-bottom: 1px solid var(--line); }
+    .review:last-child { border-bottom: none; }
+    .review-text { font-size: 13px; line-height: 1.72; color: var(--ink-soft); margin-bottom: 6px; }
+    .review-who {
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    /* Info tiles */
+    .tiles {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 9px;
+    }
+    .tile {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
       padding: 14px 8px 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 7px;
+      text-align: center;
     }
-
-    .tile-icon { font-size: 24px; }
-
+    .tile-icon { font-size: 21px; }
     .tile-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 7.5px;
-      letter-spacing: 0.08em;
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .07em;
       text-transform: uppercase;
-      color: var(--text-mid);
-      text-align: center;
-      line-height: 1.35;
+      color: var(--ink-soft);
+      line-height: 1.4;
     }
 
-    /* Reviews */
-    .review {
-      padding: 13px 0;
-      border-bottom: 1px solid var(--light);
-    }
-    .review:last-child { border-bottom: none; }
-
-    .review-text {
-      font-size: 13px;
-      line-height: 1.72;
-      color: var(--text-mid);
-      margin-bottom: 6px;
-    }
-
-    .review-who {
-      font-family: 'Space Mono', monospace;
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--text);
-    }
-
-    /* CTA buttons */
-    .btns {
+    /* Connect links */
+    .links { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+    .lnk {
       display: flex;
-      gap: 9px;
-      flex-wrap: wrap;
-      margin-bottom: 22px;
-    }
-
-    .btn {
-      display: inline-flex;
       align-items: center;
-      gap: 5px;
-      padding: 11px 20px;
-      border-radius: 100px;
-      font-family: 'Space Mono', monospace;
-      font-size: 9.5px;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
+      gap: 11px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 13px 14px;
       text-decoration: none;
-      cursor: pointer;
-      border: none;
-      transition: opacity 0.18s;
-      white-space: nowrap;
+      transition: border-color .15s ease, transform .15s ease;
     }
-    .btn:hover { opacity: 0.75; }
-    .btn-fill { color: #fff; }
-    .btn-ghost { background: var(--light); color: var(--text); }
+    .lnk:hover { border-color: var(--role); transform: translateY(-1px); }
+    .lnk-ic {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      background: var(--role-tint);
+      color: var(--role-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 13px;
+      font-family: var(--mono);
+      font-weight: 700;
+    }
+    .lnk-k {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 2px;
+    }
+    .lnk-v {
+      font-family: var(--serif);
+      font-size: 13px;
+      color: var(--ink);
+    }
 
-    /* ── BOTTOM GRADIENT BAR ── */
-    .bottom-bar {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 16px 20px 28px;
-      background: linear-gradient(to top, rgba(255,255,255,1) 55%, rgba(255,255,255,0));
+    /* CTA block */
+    .cta {
+      margin: 6px 0;
+      padding: 26px 22px;
       text-align: center;
+      background: radial-gradient(110% 90% at 50% 0%, var(--role-tint), transparent 70%), var(--card);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+    }
+    .cta-kicker {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .30em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .cta-head {
+      font-family: var(--serif);
+      font-weight: 600;
+      font-size: 26px;
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+    .cta-sub {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      max-width: 280px;
+      margin: 0 auto 18px;
+    }
+    .cta-btn {
+      display: inline-block;
+      text-decoration: none;
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--role-deep);
+      padding: 12px 24px;
+      border-radius: 999px;
+      transition: transform .15s ease, filter .15s ease;
+      box-shadow: 0 10px 24px -12px var(--role-deep);
+    }
+    .cta-btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
+
+    /* Footer sig */
+    .foot {
+      text-align: center;
+      padding: 20px 20px 14px;
+    }
+    .foot-sig {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 20px;
+      color: var(--ink);
+    }
+    .foot-meta {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-top: 5px;
+    }
+
+    /* ──── TIMELINE NAV ──── */
+    .timeline {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      z-index: 20;
+      padding: 10px 16px calc(16px + env(safe-area-inset-bottom));
+      background: linear-gradient(180deg, transparent 0%, var(--paper) 65%);
       pointer-events: none;
     }
-
-    .bottom-bar a {
+    .timeline-inner {
       pointer-events: all;
-      font-family: 'Space Mono', monospace;
-      font-size: 8.5px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--mid-gray);
-      text-decoration: none;
-      transition: color 0.18s;
+      background: rgba(251,248,241,.84);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 9px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 28px -16px rgba(40,32,22,.32);
     }
-
-    .bottom-bar a:hover { color: var(--ms-brand); }
-    .bottom-bar a span { color: var(--ms-brand); }
-
-    @media (min-width: 600px) {
-      .bottom-bar { border-radius: 0 0 48px 48px; }
+    .tl-arrow {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--ink-soft);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 15px;
+      flex-shrink: 0;
+      user-select: none;
+      transition: color .15s ease, border-color .15s ease;
+    }
+    .tl-arrow:hover { color: var(--role); border-color: var(--role); }
+    .tl-track { flex: 1; min-width: 0; }
+    .tl-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+    .tl-now {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 14px;
+      color: var(--ink);
+    }
+    .tl-count {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .16em;
+      color: var(--ink-faint);
+    }
+    .tl-nodes { display: flex; align-items: center; }
+    .tl-node  { flex: 1; display: flex; align-items: center; }
+    .tl-seg   { flex: 1; height: 1.5px; background: var(--line); }
+    .tl-node:first-child .tl-seg:first-child { background: transparent; }
+    .tl-node:last-child  .tl-seg:last-child  { background: transparent; }
+    .tl-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--line);
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: transform .22s ease, background .22s ease, box-shadow .22s ease;
+    }
+    .tl-dot:hover { transform: scale(1.3); background: var(--ink-faint); }
+    .tl-dot.active { transform: scale(1.4); box-shadow: 0 0 0 3px rgba(0,0,0,.08); }
+    .tl-hint {
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-top: 7px;
     }
   </style>
 </head>
 <body>
-<div class="page">
+<div class="device">
 
-  <!-- ── TOP BAR ── -->
-  <header class="top-bar">
+  <!-- Top bar overlay -->
+  <div class="top-bar">
     <div>
       <div class="person-name">Evelyn</div>
       <div class="person-loc">North York · Toronto</div>
     </div>
     <a href="index.html" class="ms-badge">multiself</a>
-  </header>
-
-  <!-- ── HERO CAROUSEL ── -->
-  <div class="hero-track" id="heroTrack">
-
-    <!-- 0 · Stained Glass -->
-    <div class="hero-card" style="background:#E8846A" data-idx="0">
-      <div class="wm" aria-hidden="true">LUMIÈRE LUMIÈRE LUMIÈRE LUMIÈRE LUMIÈRE LUMIÈRE LUMIÈRE LUMIÈRE LUMIÈRE LUMIÈRE LUMIÈRE</div>
-      <div class="card-title">STAINED GLASS ARTIST</div>
-      <div class="card-photo">
-        <div class="card-photo-inner">🎨</div>
-      </div>
-    </div>
-
-    <!-- 1 · Cat Sitter -->
-    <div class="hero-card" style="background:#F4B94E" data-idx="1">
-      <div class="wm" aria-hidden="true">CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT</div>
-      <div class="card-title">CAT SITTER</div>
-      <div class="card-photo">
-        <div class="card-photo-inner">🐱</div>
-      </div>
-    </div>
-
-    <!-- 2 · Massage -->
-    <div class="hero-card" style="background:#D87878" data-idx="2">
-      <div class="wm" aria-hidden="true">STOP ME STOP ME STOP ME STOP ME STOP ME STOP ME STOP ME STOP ME STOP ME STOP ME</div>
-      <div class="card-title">MASSAGE THERAPIST</div>
-      <div class="card-photo">
-        <div class="card-photo-inner">💆</div>
-      </div>
-    </div>
-
-    <!-- 3 · Face 指壓 -->
-    <div class="hero-card" style="background:#A888CC" data-idx="3">
-      <div class="wm" aria-hidden="true">指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓</div>
-      <div class="card-title">FACE 指壓</div>
-      <div class="card-photo">
-        <div class="card-photo-inner">🌿</div>
-      </div>
-    </div>
-
-    <!-- 4 · multiself Founder -->
-    <div class="hero-card" style="background:#5A9EA0" data-idx="4">
-      <div class="wm" aria-hidden="true">MULTISELF MULTISELF MULTISELF MULTISELF MULTISELF MULTISELF MULTISELF MULTISELF MULTISELF</div>
-      <div class="card-title">MULTISELF · FOUNDER</div>
-      <div class="card-photo">
-        <div class="card-photo-inner">🌐</div>
-      </div>
-    </div>
-
-  </div><!-- /hero-track -->
-
-  <!-- ── DOT INDICATORS ── -->
-  <div class="dots-strip" id="dotsStrip">
-    <div class="dot active" onclick="goTo(0)"></div>
-    <div class="dot" onclick="goTo(1)"></div>
-    <div class="dot" onclick="goTo(2)"></div>
-    <div class="dot" onclick="goTo(3)"></div>
-    <div class="dot" onclick="goTo(4)"></div>
   </div>
 
-  <!-- ── CONTENT PANE ── -->
-  <div class="content-pane" id="contentPane">
+  <!-- Scrollable screen -->
+  <div class="screen" id="screen">
 
-    <!-- 0 · Stained Glass -->
-    <div class="id-panel active" data-for="0">
-      <h2 class="id-title">Liminal Lumière · Stained Glass Artist</h2>
-      <p class="id-bio">光在玻璃裡不是被困住，是被轉化。I make stained glass pieces for the home — pet memorial boxes, botanical panels, light studies. When the candle lights, the wall shows that animal's colours. Not memory. Presence.</p>
-
-      <p class="sec">My Work</p>
-      <div class="circles">
-        <div class="circle" style="background:linear-gradient(135deg,#FFBE80,#E8846A)">🪟</div>
-        <div class="circle" style="background:linear-gradient(135deg,#E8846A,#C06040)">🌸</div>
-        <div class="circle" style="background:linear-gradient(135deg,#FFCC88,#E8846A)">✨</div>
-      </div>
-
-      <p class="sec">My Videos</p>
-      <div class="videos">
-        <div class="vid-thumb" style="background:linear-gradient(135deg,#FFBE80,#C86040)">
-          🎬<span class="vid-tag">▶ 4:22</span>
+    <!-- ── 0 · Stained Glass Artist ── -->
+    <div class="id-page active" id="page-0">
+      <div class="hero">
+        <div class="hero-wm">LUMIÈRE LUMIÈRE LUMIÈRE LUMIÈRE LUMIÈRE LUMIÈRE LUMIÈRE LUMIÈRE LUMIÈRE LUMIÈRE</div>
+        <div class="hero-top">
+          <div class="hero-counter">No. 01 / 05</div>
+          <div class="hero-type-chip">Craft</div>
         </div>
-        <div class="vid-thumb" style="background:linear-gradient(135deg,#E8846A,#A05030)">
-          🎬<span class="vid-tag">▶ 6:10</span>
+        <div class="hero-portrait">
+          <div class="hero-portrait-ph"></div>
+          <div class="hero-name">STAINED<br>GLASS</div>
         </div>
-        <div class="vid-thumb" style="background:linear-gradient(135deg,#FFAA60,#E06030)">
-          🎬<span class="vid-tag">▶ 3:40</span>
+        <div class="hero-foot">
+          <div class="hero-person">EVELYN · plays</div>
+          <div class="hero-role">Stained Glass Artist</div>
+          <div class="hero-tagline">Stained glass · light transformed into art</div>
         </div>
       </div>
 
-      <div class="btns">
-        <a href="#" class="btn btn-fill" style="background:#E8846A">Etsy Shop ↗</a>
-        <a href="#" class="btn btn-ghost">Commission Inquiry</a>
+      <div class="stats">
+        <div class="stat-row">
+          <div class="stat"><div class="k">Since</div><div class="v">2022</div></div>
+          <div class="divider-v"></div>
+          <div class="stat"><div class="k">Based in</div><div class="v sm">Toronto</div></div>
+          <div class="divider-v"></div>
+          <div class="stat"><div class="k">Type</div><div class="v sm">Craft</div></div>
+        </div>
+        <div class="traits">
+          <div class="trait"><span class="tl">Precision</span><div class="tdots"><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div></div></div>
+          <div class="trait"><span class="tl">Creativity</span><div class="tdots"><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div></div></div>
+          <div class="trait"><span class="tl">Patience</span><div class="tdots"><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot"></div></div></div>
+        </div>
+        <div class="status-tag"><span class="pulse"></span>Taking commissions</div>
+      </div>
+
+      <div class="body">
+        <div class="section">
+          <div class="sec-head">
+            <span class="sec-kicker">00 · About</span>
+            <div class="sec-title">The story</div>
+          </div>
+          <p class="about-text">
+            <span class="about-lead">"光在玻璃裡不是被困住，是被轉化。"</span>
+            I make stained glass pieces for the home — pet memorial boxes, botanical panels, light studies. When the candle lights, the wall shows that animal's colours. Not memory. Presence.
+          </p>
+        </div>
+
+        <div class="section">
+          <div class="sec-head">
+            <span class="sec-kicker">01 · Portfolio</span>
+            <div class="sec-title">Pieces in glass</div>
+          </div>
+          <div class="work-grid">
+            <div class="ph" style="aspect-ratio:16/10;border-radius:14px;grid-column:1/-1"><span>pet memorial box</span></div>
+            <div class="ph"><span>botanical panel</span></div>
+            <div class="ph"><span>rose window</span></div>
+          </div>
+          <div class="work-caption">Pet memorials · Botanicals · Suncatchers</div>
+        </div>
+
+        <div class="section">
+          <div class="sec-head">
+            <span class="sec-kicker">02 · Connect</span>
+            <div class="sec-title">Find me</div>
+          </div>
+          <div class="links">
+            <a href="#" class="lnk">
+              <div class="lnk-ic">↗</div>
+              <div><div class="lnk-k">Etsy Shop</div><div class="lnk-v">Shop pieces</div></div>
+            </a>
+            <a href="#" class="lnk">
+              <div class="lnk-ic">IG</div>
+              <div><div class="lnk-k">Instagram</div><div class="lnk-v">@evelyn.glass</div></div>
+            </a>
+          </div>
+        </div>
+
+        <div class="cta">
+          <div class="cta-kicker">Commission</div>
+          <div class="cta-head">Commission a piece</div>
+          <div class="cta-sub">Pet memorials, botanical panels, bespoke windows — made entirely by hand.</div>
+          <a href="#" class="cta-btn">Start an Inquiry →</a>
+        </div>
+
+        <div class="foot">
+          <div class="foot-sig">Evelyn</div>
+          <div class="foot-meta">Stained Glass · multiself</div>
+        </div>
       </div>
     </div>
 
-    <!-- 1 · Cat Sitter -->
-    <div class="id-panel" data-for="1">
-      <h2 class="id-title">Cat Sitter / Cat Owner / Cat Lover</h2>
-      <p class="id-bio">送貓去度假，不是寄貓。I provide a home-away-from-home where your cat is a guest, not a boarder. I read cats — I know when forced interaction does more harm than none at all.</p>
-
-      <p class="sec">My Work</p>
-      <div class="circles">
-        <div class="circle" style="background:linear-gradient(135deg,#FFD580,#F4B94E)">😺</div>
-        <div class="circle" style="background:linear-gradient(135deg,#F4B94E,#D49030)">🐾</div>
-        <div class="circle" style="background:linear-gradient(135deg,#FFE4A0,#F4B94E)">😸</div>
+    <!-- ── 1 · Cat Sitter ── -->
+    <div class="id-page" id="page-1">
+      <div class="hero">
+        <div class="hero-wm">CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT CAT</div>
+        <div class="hero-top">
+          <div class="hero-counter">No. 02 / 05</div>
+          <div class="hero-type-chip">Care</div>
+        </div>
+        <div class="hero-portrait">
+          <div class="hero-portrait-ph"></div>
+          <div class="hero-name">CAT<br>SITTER</div>
+        </div>
+        <div class="hero-foot">
+          <div class="hero-person">EVELYN · plays</div>
+          <div class="hero-role">Cat Sitter</div>
+          <div class="hero-tagline">Cat sitter · cat owner · cat lover</div>
+        </div>
       </div>
 
-      <p class="sec">Reviews</p>
-      <div class="review">
-        <p class="review-text">Reliable and caring. Evelyn ensures your pets receive love and individual attention while you're away.</p>
-        <p class="review-who">— Apple's Mum</p>
-      </div>
-      <div class="review">
-        <p class="review-text">Highly recommend. Superb care and love for your cats. MoMo came home happier than he left.</p>
-        <p class="review-who">— MoMo's Family</p>
+      <div class="stats">
+        <div class="stat-row">
+          <div class="stat"><div class="k">Since</div><div class="v">2021</div></div>
+          <div class="divider-v"></div>
+          <div class="stat"><div class="k">Based in</div><div class="v sm">Toronto</div></div>
+          <div class="divider-v"></div>
+          <div class="stat"><div class="k">Type</div><div class="v sm">Care</div></div>
+        </div>
+        <div class="traits">
+          <div class="trait"><span class="tl">Warmth</span><div class="tdots"><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div></div></div>
+          <div class="trait"><span class="tl">Reliability</span><div class="tdots"><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div></div></div>
+          <div class="trait"><span class="tl">Patience</span><div class="tdots"><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot"></div></div></div>
+        </div>
+        <div class="status-tag"><span class="pulse"></span>Available for bookings</div>
       </div>
 
-      <div class="btns" style="margin-top:18px">
-        <a href="#" class="btn btn-fill" style="background:#F4B94E;color:#1A1714">Book a Stay ↗</a>
-        <a href="#" class="btn btn-ghost">Watch Tutorial</a>
+      <div class="body">
+        <div class="section">
+          <div class="sec-head">
+            <span class="sec-kicker">00 · About</span>
+            <div class="sec-title">The story</div>
+          </div>
+          <p class="about-text">
+            <span class="about-lead">"送貓去度假，不是寄貓。"</span>
+            I provide a home-away-from-home where your cat is a guest, not a boarder. I read cats — I know when forced interaction does more harm than none at all.
+          </p>
+        </div>
+
+        <div class="section">
+          <div class="sec-head">
+            <span class="sec-kicker">01 · Reviews</span>
+            <div class="sec-title">What clients say</div>
+          </div>
+          <div class="review">
+            <p class="review-text">Reliable and caring. Evelyn ensures your pets receive love and individual attention while you're away.</p>
+            <p class="review-who">— Apple's Mum</p>
+          </div>
+          <div class="review">
+            <p class="review-text">Highly recommend. Superb care and love for your cats. MoMo came home happier than he left.</p>
+            <p class="review-who">— MoMo's Family</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="sec-head">
+            <span class="sec-kicker">02 · Connect</span>
+            <div class="sec-title">Book a stay</div>
+          </div>
+          <div class="links">
+            <a href="#" class="lnk">
+              <div class="lnk-ic">📅</div>
+              <div><div class="lnk-k">Book</div><div class="lnk-v">Availability</div></div>
+            </a>
+            <a href="#" class="lnk">
+              <div class="lnk-ic">IG</div>
+              <div><div class="lnk-k">Instagram</div><div class="lnk-v">@evelyn.cats</div></div>
+            </a>
+          </div>
+        </div>
+
+        <div class="cta">
+          <div class="cta-kicker">Book a Stay</div>
+          <div class="cta-head">Your cat, my guest</div>
+          <div class="cta-sub">Drop-in visits, daily check-ins, or overnight stays. Your cat comes home happier.</div>
+          <a href="#" class="cta-btn">Book Now →</a>
+        </div>
+
+        <div class="foot">
+          <div class="foot-sig">Evelyn</div>
+          <div class="foot-meta">Cat Sitter · multiself</div>
+        </div>
       </div>
     </div>
 
-    <!-- 2 · Massage -->
-    <div class="id-panel" data-for="2">
-      <h2 class="id-title">Massage Therapist</h2>
-      <p class="id-bio">$10 per 10 minutes. Shoulder and head. No appointment, no private room, no $120 commitment. You stop me. You sit down. Ten minutes later you decide if you want more. The pricing is the design.</p>
-
-      <p class="sec">How It Works</p>
-      <div class="tiles">
-        <div class="tile">
-          <div class="tile-icon">📍</div>
-          <div class="tile-label">North York Toronto</div>
+    <!-- ── 2 · Massage Therapist ── -->
+    <div class="id-page" id="page-2">
+      <div class="hero">
+        <div class="hero-wm">STOP ME STOP ME STOP ME STOP ME STOP ME STOP ME STOP ME STOP ME STOP ME</div>
+        <div class="hero-top">
+          <div class="hero-counter">No. 03 / 05</div>
+          <div class="hero-type-chip">Body</div>
         </div>
-        <div class="tile">
-          <div class="tile-icon">⏱</div>
-          <div class="tile-label">$10 per 10 min</div>
+        <div class="hero-portrait">
+          <div class="hero-portrait-ph"></div>
+          <div class="hero-name">MASSAGE</div>
         </div>
-        <div class="tile">
-          <div class="tile-icon">📅</div>
-          <div class="tile-label">Book Anytime</div>
+        <div class="hero-foot">
+          <div class="hero-person">EVELYN · plays</div>
+          <div class="hero-role">Massage Therapist</div>
+          <div class="hero-tagline">$10 per 10 minutes · you stop me · North York</div>
         </div>
       </div>
 
-      <div class="btns">
-        <a href="#" class="btn btn-fill" style="background:#D87878">Book Now ↗</a>
-        <a href="#" class="btn btn-ghost">Instagram</a>
+      <div class="stats">
+        <div class="stat-row">
+          <div class="stat"><div class="k">Rate</div><div class="v" style="font-size:17px">$10<span style="font-size:12px">/10min</span></div></div>
+          <div class="divider-v"></div>
+          <div class="stat"><div class="k">Location</div><div class="v sm">North York</div></div>
+          <div class="divider-v"></div>
+          <div class="stat"><div class="k">Type</div><div class="v sm">Body</div></div>
+        </div>
+        <div class="traits">
+          <div class="trait"><span class="tl">Accessibility</span><div class="tdots"><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div></div></div>
+          <div class="trait"><span class="tl">Presence</span><div class="tdots"><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div></div></div>
+          <div class="trait"><span class="tl">Calm</span><div class="tdots"><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot"></div></div></div>
+        </div>
+        <div class="status-tag"><span class="pulse"></span>Open for bookings</div>
+      </div>
+
+      <div class="body">
+        <div class="section">
+          <div class="sec-head">
+            <span class="sec-kicker">00 · About</span>
+            <div class="sec-title">The design</div>
+          </div>
+          <p class="about-text">
+            <span class="about-lead">"你停我就停。"</span>
+            $10 per 10 minutes. Shoulder and head. No appointment, no private room, no $120 commitment. You stop me. You sit down. Ten minutes later you decide if you want more. The pricing is the design.
+          </p>
+        </div>
+
+        <div class="section">
+          <div class="sec-head">
+            <span class="sec-kicker">01 · How It Works</span>
+            <div class="sec-title">Simple by design</div>
+          </div>
+          <div class="tiles">
+            <div class="tile"><div class="tile-icon">📍</div><div class="tile-label">North York Toronto</div></div>
+            <div class="tile"><div class="tile-icon">⏱</div><div class="tile-label">$10 per 10 min</div></div>
+            <div class="tile"><div class="tile-icon">🤝</div><div class="tile-label">You stop me</div></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="sec-head">
+            <span class="sec-kicker">02 · Connect</span>
+            <div class="sec-title">Find me</div>
+          </div>
+          <div class="links">
+            <a href="#" class="lnk">
+              <div class="lnk-ic">📅</div>
+              <div><div class="lnk-k">Book</div><div class="lnk-v">Anytime</div></div>
+            </a>
+            <a href="#" class="lnk">
+              <div class="lnk-ic">IG</div>
+              <div><div class="lnk-k">Instagram</div><div class="lnk-v">@evelyn</div></div>
+            </a>
+          </div>
+        </div>
+
+        <div class="cta">
+          <div class="cta-kicker">Book</div>
+          <div class="cta-head">No commitment needed</div>
+          <div class="cta-sub">Sit down. Ten minutes. You decide what happens next.</div>
+          <a href="#" class="cta-btn">Book Now →</a>
+        </div>
+
+        <div class="foot">
+          <div class="foot-sig">Evelyn</div>
+          <div class="foot-meta">Massage · multiself</div>
+        </div>
       </div>
     </div>
 
-    <!-- 3 · Face 指壓 -->
-    <div class="id-panel" data-for="3">
-      <h2 class="id-title">Face 指壓</h2>
-      <p class="id-bio">你的臉儲存了多少壓力，你不知道。Not a facial. Not skincare. I translate ancient pressure-point systems into language you can actually feel. Camera facing my own face — invitation, not lecture.</p>
-
-      <p class="sec">My Videos</p>
-      <div class="videos">
-        <div class="vid-thumb" style="background:linear-gradient(135deg,#D4B0F0,#A888CC)">
-          🌿<span class="vid-tag">▶ 3:40</span>
+    <!-- ── 3 · Face 指壓 ── -->
+    <div class="id-page" id="page-3">
+      <div class="hero">
+        <div class="hero-wm">指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓指壓</div>
+        <div class="hero-top">
+          <div class="hero-counter">No. 04 / 05</div>
+          <div class="hero-type-chip">Healing</div>
         </div>
-        <div class="vid-thumb" style="background:linear-gradient(135deg,#A888CC,#8060A8)">
-          💜<span class="vid-tag">▶ 5:12</span>
+        <div class="hero-portrait">
+          <div class="hero-portrait-ph"></div>
+          <div class="hero-name">FACE<br>指壓</div>
         </div>
-        <div class="vid-thumb" style="background:linear-gradient(135deg,#E0C8F8,#A888CC)">
-          ✨<span class="vid-tag">▶ 2:58</span>
+        <div class="hero-foot">
+          <div class="hero-person">EVELYN · plays</div>
+          <div class="hero-role">Face 指壓</div>
+          <div class="hero-tagline">Ancient pressure-point systems · in a language you can feel</div>
         </div>
       </div>
 
-      <div class="btns">
-        <a href="#" class="btn btn-fill" style="background:#A888CC">Watch Video ↗</a>
-        <a href="#" class="btn btn-ghost">Book Session</a>
+      <div class="stats">
+        <div class="stat-row">
+          <div class="stat"><div class="k">Method</div><div class="v sm">指壓</div></div>
+          <div class="divider-v"></div>
+          <div class="stat"><div class="k">Location</div><div class="v sm">Toronto</div></div>
+          <div class="divider-v"></div>
+          <div class="stat"><div class="k">Type</div><div class="v sm">Healing</div></div>
+        </div>
+        <div class="traits">
+          <div class="trait"><span class="tl">Technique</span><div class="tdots"><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div></div></div>
+          <div class="trait"><span class="tl">Intuition</span><div class="tdots"><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div></div></div>
+          <div class="trait"><span class="tl">Depth</span><div class="tdots"><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot"></div></div></div>
+        </div>
+        <div class="status-tag"><span class="pulse"></span>Sharing videos & sessions</div>
+      </div>
+
+      <div class="body">
+        <div class="section">
+          <div class="sec-head">
+            <span class="sec-kicker">00 · About</span>
+            <div class="sec-title">The practice</div>
+          </div>
+          <p class="about-text">
+            <span class="about-lead">"你的臉儲存了多少壓力，你不知道。"</span>
+            Not a facial. Not skincare. I translate ancient pressure-point systems into language you can actually feel. Camera facing my own face — invitation, not lecture.
+          </p>
+        </div>
+
+        <div class="section">
+          <div class="sec-head">
+            <span class="sec-kicker">01 · Videos</span>
+            <div class="sec-title">Watch &amp; learn</div>
+          </div>
+          <div class="work-grid">
+            <div class="ph" style="aspect-ratio:16/10;border-radius:14px;grid-column:1/-1"><span>pressure point tutorial</span></div>
+            <div class="ph"><span>morning routine</span></div>
+            <div class="ph"><span>tension release</span></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="sec-head">
+            <span class="sec-kicker">02 · Connect</span>
+            <div class="sec-title">Find me</div>
+          </div>
+          <div class="links">
+            <a href="#" class="lnk">
+              <div class="lnk-ic">▶</div>
+              <div><div class="lnk-k">YouTube</div><div class="lnk-v">Tutorials</div></div>
+            </a>
+            <a href="#" class="lnk">
+              <div class="lnk-ic">IG</div>
+              <div><div class="lnk-k">Instagram</div><div class="lnk-v">@evelyn.face</div></div>
+            </a>
+          </div>
+        </div>
+
+        <div class="cta">
+          <div class="cta-kicker">Book a Session</div>
+          <div class="cta-head">Feel the difference</div>
+          <div class="cta-sub">One session and you'll understand what your face has been holding.</div>
+          <a href="#" class="cta-btn">Book Session →</a>
+        </div>
+
+        <div class="foot">
+          <div class="foot-sig">Evelyn</div>
+          <div class="foot-meta">Face 指壓 · multiself</div>
+        </div>
       </div>
     </div>
 
-    <!-- 4 · multiself Founder -->
-    <div class="id-panel" data-for="4">
-      <h2 class="id-title">multiself · Founder</h2>
-      <p class="id-bio">See a person in whole. Resume is out in this generation. The platform that shows all of you — not your best angle, not your most marketable version. Same you, every version. This profile you're reading is the demo.</p>
-
-      <p class="sec">The Idea</p>
-      <div class="tiles">
-        <div class="tile">
-          <div class="tile-icon">✦</div>
-          <div class="tile-label">Every version of you</div>
+    <!-- ── 4 · multiself Founder ── -->
+    <div class="id-page" id="page-4">
+      <div class="hero">
+        <div class="hero-wm">MULTISELF MULTISELF MULTISELF MULTISELF MULTISELF MULTISELF MULTISELF MULTISELF</div>
+        <div class="hero-top">
+          <div class="hero-counter">No. 05 / 05</div>
+          <div class="hero-type-chip">Platform</div>
         </div>
-        <div class="tile">
-          <div class="tile-icon">🔗</div>
-          <div class="tile-label">One link to share</div>
+        <div class="hero-portrait">
+          <div class="hero-portrait-ph"></div>
+          <div class="hero-name">MULTI<br>SELF</div>
         </div>
-        <div class="tile">
-          <div class="tile-icon">🌐</div>
-          <div class="tile-label">Built for makers</div>
+        <div class="hero-foot">
+          <div class="hero-person">EVELYN · plays</div>
+          <div class="hero-role">multiself · Founder</div>
+          <div class="hero-tagline">Same you. Every version. — the platform</div>
         </div>
       </div>
 
-      <div class="btns">
-        <a href="index.html" class="btn btn-fill" style="background:#5A9EA0">Create Yours ↗</a>
-        <a href="index.html" class="btn btn-ghost">Join Waitlist</a>
+      <div class="stats">
+        <div class="stat-row">
+          <div class="stat"><div class="k">Founded</div><div class="v">2025</div></div>
+          <div class="divider-v"></div>
+          <div class="stat"><div class="k">Stage</div><div class="v sm">Building</div></div>
+          <div class="divider-v"></div>
+          <div class="stat"><div class="k">Type</div><div class="v sm">Platform</div></div>
+        </div>
+        <div class="traits">
+          <div class="trait"><span class="tl">Vision</span><div class="tdots"><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div></div></div>
+          <div class="trait"><span class="tl">Courage</span><div class="tdots"><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div></div></div>
+          <div class="trait"><span class="tl">Systems</span><div class="tdots"><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot on"></div><div class="tdot"></div></div></div>
+        </div>
+        <div class="status-tag"><span class="pulse"></span>Building in public</div>
+      </div>
+
+      <div class="body">
+        <div class="section">
+          <div class="sec-head">
+            <span class="sec-kicker">00 · About</span>
+            <div class="sec-title">The idea</div>
+          </div>
+          <p class="about-text">
+            <span class="about-lead">"See a person in whole."</span>
+            Resume is out in this generation. The platform that shows all of you — not your best angle, not your most marketable version. Same you, every version. This profile you're reading is the demo.
+          </p>
+        </div>
+
+        <div class="section">
+          <div class="sec-head">
+            <span class="sec-kicker">01 · Features</span>
+            <div class="sec-title">What it does</div>
+          </div>
+          <div class="tiles">
+            <div class="tile"><div class="tile-icon">✦</div><div class="tile-label">Every version of you</div></div>
+            <div class="tile"><div class="tile-icon">🔗</div><div class="tile-label">One link to share</div></div>
+            <div class="tile"><div class="tile-icon">🌐</div><div class="tile-label">Built for makers</div></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="sec-head">
+            <span class="sec-kicker">02 · Connect</span>
+            <div class="sec-title">Join us</div>
+          </div>
+          <div class="links">
+            <a href="index.html" class="lnk">
+              <div class="lnk-ic">✦</div>
+              <div><div class="lnk-k">Platform</div><div class="lnk-v">multiself.co</div></div>
+            </a>
+            <a href="#" class="lnk">
+              <div class="lnk-ic">IG</div>
+              <div><div class="lnk-k">Instagram</div><div class="lnk-v">@multiself</div></div>
+            </a>
+          </div>
+        </div>
+
+        <div class="cta">
+          <div class="cta-kicker">Join Waitlist</div>
+          <div class="cta-head">Create your multiself</div>
+          <div class="cta-sub">Show yourself whole. One link. Every version.</div>
+          <a href="index.html" class="cta-btn">Join Waitlist →</a>
+        </div>
+
+        <div class="foot">
+          <div class="foot-sig">Evelyn</div>
+          <div class="foot-meta">Founder · multiself</div>
+        </div>
       </div>
     </div>
 
-  </div><!-- /content-pane -->
+  </div><!-- /screen -->
 
-  <!-- ── BOTTOM GRADIENT ── -->
-  <div class="bottom-bar">
-    <a href="index.html">built with <span>multiself</span> · create yours →</a>
+  <!-- Timeline nav -->
+  <div class="timeline">
+    <div class="timeline-inner">
+      <button class="tl-arrow" id="tl-prev" aria-label="Previous">‹</button>
+      <div class="tl-track">
+        <div class="tl-label">
+          <div class="tl-now" id="tl-now">Stained Glass Artist</div>
+          <div class="tl-count" id="tl-count">01 / 05</div>
+        </div>
+        <div class="tl-nodes" id="tl-nodes"></div>
+        <div class="tl-hint">tap dots or use arrows to navigate</div>
+      </div>
+      <button class="tl-arrow" id="tl-next" aria-label="Next">›</button>
+    </div>
   </div>
 
-</div><!-- /page -->
+</div><!-- /device -->
 
 <script>
-  const track   = document.getElementById('heroTrack');
-  const dots    = document.querySelectorAll('.dot');
-  const panels  = document.querySelectorAll('.id-panel');
-  const pane    = document.getElementById('contentPane');
+  const IDS = [
+    { role: "Stained Glass Artist", color: "#C8785A", colorDeep: "#A05A3E", colorTint: "#FBF0EB" },
+    { role: "Cat Sitter",           color: "#C8943A", colorDeep: "#9A7020", colorTint: "#FBF5E8" },
+    { role: "Massage Therapist",    color: "#C07070", colorDeep: "#9A4A4A", colorTint: "#FAF0F0" },
+    { role: "Face 指壓",             color: "#9878B8", colorDeep: "#7050A0", colorTint: "#F4F0FA" },
+    { role: "multiself · Founder",  color: "#4E8F90", colorDeep: "#356A6A", colorTint: "#EEF5F5" },
+  ];
 
-  const COLORS  = ['#E8846A','#F4B94E','#D87878','#A888CC','#5A9EA0'];
-  let   current = 0;
-  let   ticking = false;
+  let cur = 0;
+  const pages   = document.querySelectorAll('.id-page');
+  const nodesEl = document.getElementById('tl-nodes');
+  const nowEl   = document.getElementById('tl-now');
+  const countEl = document.getElementById('tl-count');
+  const screen  = document.getElementById('screen');
 
-  function updateUI(idx) {
-    if (idx === current && document.querySelectorAll('.id-panel.active').length) return;
-    current = idx;
+  // Build timeline nodes
+  IDS.forEach((id, i) => {
+    const node = document.createElement('div');
+    node.className = 'tl-node';
+    const lead  = `<div class="tl-seg"></div>`;
+    const trail = `<div class="tl-seg"></div>`;
+    node.innerHTML = lead + `<div class="tl-dot" data-i="${i}"></div>` + trail;
+    nodesEl.appendChild(node);
+    node.querySelector('.tl-dot').addEventListener('click', () => goTo(i));
+  });
 
-    dots.forEach((d, i) => {
-      const active = i === idx;
-      d.classList.toggle('active', active);
-      d.style.background = active ? COLORS[idx] : '#D4D0CC';
-      d.style.width = active ? '24px' : '7px';
-    });
-
-    panels.forEach((p, i) => p.classList.toggle('active', i === idx));
-    pane.scrollTop = 0;
+  function applyColors(id) {
+    const r = document.documentElement.style;
+    r.setProperty('--role',      id.color);
+    r.setProperty('--role-deep', id.colorDeep);
+    r.setProperty('--role-tint', id.colorTint);
   }
 
   function goTo(idx) {
-    track.scrollTo({ left: idx * track.clientWidth, behavior: 'smooth' });
-    updateUI(idx);
+    if (idx === cur) return;
+    const prev = cur;
+    cur = idx;
+    const dir = idx > prev ? 'enter-next' : 'enter-prev';
+
+    pages[prev].classList.remove('active');
+    pages[idx].classList.remove('enter-next', 'enter-prev');
+    pages[idx].classList.add(dir, 'active');
+    screen.scrollTop = 0;
+
+    applyColors(IDS[idx]);
+    nowEl.textContent  = IDS[idx].role;
+    countEl.textContent = String(idx + 1).padStart(2,'0') + ' / ' + String(IDS.length).padStart(2,'0');
+
+    document.querySelectorAll('.tl-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === idx);
+      d.style.background = i === idx ? IDS[idx].color : '';
+    });
+
+    setTimeout(() => pages[idx].classList.remove('enter-next', 'enter-prev'), 500);
   }
 
-  track.addEventListener('scroll', () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      const idx = Math.round(track.scrollLeft / (track.clientWidth || 1));
-      if (idx !== current && idx >= 0 && idx < dots.length) updateUI(idx);
-      ticking = false;
-    });
+  document.getElementById('tl-prev').addEventListener('click', () => { if (cur > 0) goTo(cur - 1); });
+  document.getElementById('tl-next').addEventListener('click', () => { if (cur < IDS.length - 1) goTo(cur + 1); });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft'  && cur > 0)              goTo(cur - 1);
+    if (e.key === 'ArrowRight' && cur < IDS.length - 1) goTo(cur + 1);
+  });
+
+  // Touch swipe (detect horizontal intent)
+  let tx = 0, ty = 0;
+  screen.addEventListener('touchstart', e => {
+    tx = e.changedTouches[0].clientX;
+    ty = e.changedTouches[0].clientY;
+  }, { passive: true });
+  screen.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    const dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > Math.abs(dy) * 1.4 && Math.abs(dx) > 55) {
+      if (dx < 0 && cur < IDS.length - 1) goTo(cur + 1);
+      if (dx > 0 && cur > 0)              goTo(cur - 1);
+    }
   }, { passive: true });
 
-  // Initialize
-  updateUI(0);
+  // Init
+  applyColors(IDS[0]);
+  document.querySelectorAll('.tl-dot')[0].classList.add('active');
+  document.querySelectorAll('.tl-dot')[0].style.background = IDS[0].color;
 </script>
 </body>
 </html>
